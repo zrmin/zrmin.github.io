@@ -29,7 +29,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201050957524.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201050959340.png">
 <meta property="article:published_time" content="2022-06-30T12:06:07.000Z">
-<meta property="article:modified_time" content="2022-06-30T12:13:45.736Z">
+<meta property="article:modified_time" content="2022-06-30T14:46:32.017Z">
 <meta property="article:author" content="张润民">
 <meta property="article:tag" content="C">
 <meta name="twitter:card" content="summary">
@@ -213,6 +213,8 @@
         <p>前面讲运算符的时候，有一个函数调用运算符我们没有讲，因为我们要在函数中讲。</p>
 <h2 id="一、函数概述"><a href="#一、函数概述" class="headerlink" title="一、函数概述"></a>一、函数概述</h2><p>函数是一种封装代码的方法，可以避免程序中的代码重复，提高代码可重用性和代码的简洁性、易读性。</p>
 <p>函数中参数的传递有两种方式，分别是：值传递和指针传递。对于按值传递的参数，函数外部的参数和函数内部使用的参数，即实参和形参是两个不同的数据对象，即形参和实参保存在不同的内存区域中，因为按值传递时，形参是对实参数据对象的一个复制，函数内部对形参的改变并不会对实参产生影响。对于按指针传递的参数，函数内部使用的数据对象和函数外部的实参的数据对象是同一个数据对象，因此函数内部对于数据对象做出的修改会反映在一个（块）内存中，这块内存也是实参的内存空间，因此，实参也会受到影响。</p>
+<span id="more"></span>
+
 <p>上面的说教不免过于学究，看个例子：</p>
 <p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201031545164.png" alt="image-20220103154515858"></p>
 <p>在foo()函数中有4个参数，前两个参数是值传递，函数内和函数外使用的是两个不同内存区域中的数据对象（即使它们的值相同），后两个参数是指针传递，第一个是a pointer to a struct，第二个是a pointer to a function，对于函数指针，可以省略<code>*</code>符号，也就是说foo()函数可以写成：</p>

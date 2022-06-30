@@ -8,12 +8,12 @@
   <link rel="dns-prefetch" href="http://example.com">
   <title>6、C语言中枚举、联合、结构体的底层实现 | 张润民博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一、枚举 enum 枚举类型的实现 这下面的例子中，我们枚举了周一到周五这五天，那么枚举在底层是如何实现的呢？请看下图：    我们在main函数中调用了foo函数，并且传入的参数是枚举类型Weekday中的第一个Mon，在前面的文章中，我们说过，SystemV调用约定中，第一个函数参数的传递使用的寄存器是rdi。在汇编代码第29行，我们发现寄存器edi被赋值为0，可是我们传入的第一个参数是Mon">
+  <meta name="description" content="一、枚举 enum 枚举类型的实现 这下面的例子中，我们枚举了周一到周五这五天，那么枚举在底层是如何实现的呢？请看下图：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="6、C语言中枚举、联合、结构体的底层实现">
 <meta property="og:url" content="http://example.com/2022/06/30/6%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E6%9E%9A%E4%B8%BE%E3%80%81%E8%81%94%E5%90%88%E3%80%81%E7%BB%93%E6%9E%84%E4%BD%93%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/index.html">
 <meta property="og:site_name" content="张润民博客">
-<meta property="og:description" content="一、枚举 enum 枚举类型的实现 这下面的例子中，我们枚举了周一到周五这五天，那么枚举在底层是如何实现的呢？请看下图：    我们在main函数中调用了foo函数，并且传入的参数是枚举类型Weekday中的第一个Mon，在前面的文章中，我们说过，SystemV调用约定中，第一个函数参数的传递使用的寄存器是rdi。在汇编代码第29行，我们发现寄存器edi被赋值为0，可是我们传入的第一个参数是Mon">
+<meta property="og:description" content="一、枚举 enum 枚举类型的实现 这下面的例子中，我们枚举了周一到周五这五天，那么枚举在底层是如何实现的呢？请看下图：">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201071649398.jpg">
 <meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201071655252.png">
@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201071453901.jpg">
 <meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201071519246.jpg">
 <meta property="article:published_time" content="2022-06-30T12:06:33.000Z">
-<meta property="article:modified_time" content="2022-06-30T14:35:31.661Z">
+<meta property="article:modified_time" content="2022-06-30T14:47:13.378Z">
 <meta property="article:author" content="张润民">
 <meta property="article:tag" content="C">
 <meta name="twitter:card" content="summary">
@@ -217,6 +217,8 @@
 </li>
 </ol>
 <p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201071649398.jpg"></p>
+<span id="more"></span>
+
 <p>我们在main函数中调用了foo函数，并且传入的参数是枚举类型Weekday中的第一个Mon，在前面的文章中，我们说过，SystemV调用约定中，第一个函数参数的传递使用的寄存器是rdi。在汇编代码第29行，我们发现寄存器edi被赋值为0，可是我们传入的第一个参数是<code>Mon</code>，也就是说，在编译器看来，Mon就是0，0就是Mon。也就是说，枚举类型中的数其实是从0开始的整数。那么这个整数是int类型的，还是short类型的呢？我们可以看一下函数的执行结果：</p>
 <p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201071655252.png"></p>
 <p>我们在C源代码第7~9行中使用了宏函数来判断这个Mon参数的类型，发现是int类型的。</p>

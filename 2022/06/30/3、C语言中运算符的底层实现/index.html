@@ -8,12 +8,12 @@
   <link rel="dns-prefetch" href="http://example.com">
   <title>3、C语言中运算符的底层实现 | 张润民博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="C语言运算符可以大体分成7类：算术运算符、关系运算符、位运算符、赋值运算符、逻辑运算符、成员访问运算符、其他运算符。  其中，算术运算符、关系运算符、位运算符、赋值运算符都是基础的操作，它们都有具体硬件平台对应的机器指令。 一、算术运算符 加、自增 add 减、自减 sub 乘 mul 除、取余 div（除的同时，余数也会被保存在寄存器中）  二、关系运算符关系运算符通过cmp指令来比较两个数的大">
+  <meta name="description" content="C语言运算符可以大体分成7类：算术运算符、关系运算符、位运算符、赋值运算符、逻辑运算符、成员访问运算符、其他运算符。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="3、C语言中运算符的底层实现">
 <meta property="og:url" content="http://example.com/2022/06/30/3%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/index.html">
 <meta property="og:site_name" content="张润民博客">
-<meta property="og:description" content="C语言运算符可以大体分成7类：算术运算符、关系运算符、位运算符、赋值运算符、逻辑运算符、成员访问运算符、其他运算符。  其中，算术运算符、关系运算符、位运算符、赋值运算符都是基础的操作，它们都有具体硬件平台对应的机器指令。 一、算术运算符 加、自增 add 减、自减 sub 乘 mul 除、取余 div（除的同时，余数也会被保存在寄存器中）  二、关系运算符关系运算符通过cmp指令来比较两个数的大">
+<meta property="og:description" content="C语言运算符可以大体分成7类：算术运算符、关系运算符、位运算符、赋值运算符、逻辑运算符、成员访问运算符、其他运算符。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112111344426.jpg">
 <meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112111354578.jpg">
@@ -23,7 +23,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112111807114.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112111819030.png">
 <meta property="article:published_time" content="2022-06-30T12:05:30.000Z">
-<meta property="article:modified_time" content="2022-06-30T12:09:19.813Z">
+<meta property="article:modified_time" content="2022-06-30T14:45:46.705Z">
 <meta property="article:author" content="张润民">
 <meta property="article:tag" content="C">
 <meta name="twitter:card" content="summary">
@@ -206,6 +206,8 @@
       
         <p>C语言运算符可以大体分成7类：算术运算符、关系运算符、位运算符、赋值运算符、逻辑运算符、成员访问运算符、其他运算符。</p>
 <p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112111344426.jpg" alt="IMG_20211211_134352"></p>
+<span id="more"></span>
+
 <p>其中，算术运算符、关系运算符、位运算符、赋值运算符都是基础的操作，它们都有具体硬件平台对应的机器指令。</p>
 <h2 id="一、算术运算符"><a href="#一、算术运算符" class="headerlink" title="一、算术运算符"></a>一、算术运算符</h2><ol>
 <li>加、自增 add</li>

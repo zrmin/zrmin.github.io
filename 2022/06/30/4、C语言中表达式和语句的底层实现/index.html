@@ -21,7 +21,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112142221835.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112142236125.png">
 <meta property="article:published_time" content="2022-06-30T12:05:50.000Z">
-<meta property="article:modified_time" content="2022-06-30T12:10:05.794Z">
+<meta property="article:modified_time" content="2022-06-30T14:46:08.756Z">
 <meta property="article:author" content="张润民">
 <meta property="article:tag" content="C">
 <meta name="twitter:card" content="summary">
@@ -208,6 +208,8 @@
 
 <p>当表达式中有多个运算符和操作数时，C语言会通过运算符的优先级和结合性来确保表达式运算的正确性。以上面为例：<code>*</code>和<code>/</code>的优先级比<code>+</code>要高，因此，我们要先计算<code>(1 + 2) * 3</code>和<code>4 / 5</code>的值，然后再计算两个结果的和，最终得出最后的值。但是<code>*</code>和<code>/</code>中哪个先进性运算呢？这就要看<code>*</code>和<code>/</code>的结合性了，它们都是左结合的，在上面的例子中，<code>*</code>在<code>/</code>的左面，因此根据左结合性，我们要先算<code>*</code>，再算<code>/</code>。</p>
 <p>对于这种表达式，在编译时，它的计算顺序会显现在AST(Abstract Syntax Tree)上，这是编译原理的内容，在后期，Meng语言和编译器的项目会用到编译原理。我会将编译原理的学习内容放在编译原理的项目中。</p>
+<span id="more"></span>
+
 <h2 id="二、语句"><a href="#二、语句" class="headerlink" title="二、语句"></a>二、语句</h2><p>语句statement，是构成程序的最大粒度的单位。</p>
 <p>语句可以分为5种：</p>
 <ol>
