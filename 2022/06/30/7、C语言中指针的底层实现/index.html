@@ -6,17 +6,33 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Tag: C | 张润民博客</title>
+  <title>7、C语言中指针的底层实现 | 张润民博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="记录自己学习的内容">
-<meta property="og:type" content="website">
-<meta property="og:title" content="张润民博客">
-<meta property="og:url" content="http://example.com/tags/C/index.html">
+  <meta name="description" content="指针可以实现程序中的数据共享，同时，因为指针，造成了函数传递时参数传递的两种选择：值传递或者指针传递，使用指针传递可以提高程序运行速度，因为值传递时会有数据拷贝。 一、指针的基本使用我们来看一下指针的基本使用：  我们看一下执行的结果：  我们来看一下指针的底层的实现：  汇编代码第9行，将10保存在[rbp-20]处，对应源代码第9行的int n &#x3D; 10  1mov DWORD PTR [rb">
+<meta property="og:type" content="article">
+<meta property="og:title" content="7、C语言中指针的底层实现">
+<meta property="og:url" content="http://example.com/2022/06/30/7%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E6%8C%87%E9%92%88%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/index.html">
 <meta property="og:site_name" content="张润民博客">
-<meta property="og:description" content="记录自己学习的内容">
+<meta property="og:description" content="指针可以实现程序中的数据共享，同时，因为指针，造成了函数传递时参数传递的两种选择：值传递或者指针传递，使用指针传递可以提高程序运行速度，因为值传递时会有数据拷贝。 一、指针的基本使用我们来看一下指针的基本使用：  我们看一下执行的结果：  我们来看一下指针的底层的实现：  汇编代码第9行，将10保存在[rbp-20]处，对应源代码第9行的int n &#x3D; 10  1mov DWORD PTR [rb">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201072040142.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201072043669.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201072053943.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201072320516.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201072336122.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201072347519.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201072358225.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201080012029.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201092101774.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201091945142.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201091945426.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201092015249.jpg">
+<meta property="article:published_time" content="2022-06-30T12:06:51.000Z">
+<meta property="article:modified_time" content="2022-06-30T14:36:20.622Z">
 <meta property="article:author" content="张润民">
+<meta property="article:tag" content="C">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201072040142.jpg">
   
     <link rel="alternative" href="/atom.xml" title="张润民博客" type="application/atom+xml">
   
@@ -162,36 +178,163 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-7、C语言中指针的底层实现" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      7、C语言中指针的底层实现
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2022" class="archive-year">2022</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/30/7%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E6%8C%87%E9%92%88%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
+
+        <!--显示阅读次数-->
+
+  <br/>
+  <a class="cloud-tie-join-count" href="javascript:void(0);" style="color:gray;font-size:14px;">
+  <span class="icon-sort"></span>
+  <span id="busuanzi_container_page_pv" style="color:#ef7522;font-size:14px;">
+            阅读数: <span id="busuanzi_value_page_pv"></span>次 &nbsp;&nbsp;
+  </span>
+  </a>
+
+<!--显示阅读次数完毕-->
+        
+        <a href="/2022/06/30/7%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E6%8C%87%E9%92%88%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
   	<time datetime="2022-06-30T12:06:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/30/7%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E6%8C%87%E9%92%88%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">7、C语言中指针的底层实现</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>指针可以实现程序中的数据共享，同时，因为指针，造成了函数传递时参数传递的两种选择：值传递或者指针传递，使用指针传递可以提高程序运行速度，因为值传递时会有数据拷贝。</p>
+<h2 id="一、指针的基本使用"><a href="#一、指针的基本使用" class="headerlink" title="一、指针的基本使用"></a>一、指针的基本使用</h2><p>我们来看一下指针的基本使用：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201072040142.jpg"></p>
+<p>我们看一下执行的结果：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201072043669.png" alt="image-20220107204354624"></p>
+<p>我们来看一下指针的底层的实现：</p>
+<ol>
+<li><strong>汇编代码第9行</strong>，将10保存在[rbp-20]处，对应源代码第9行的<code>int n = 10</code></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov DWORD PTR [rbp-20], 10 ;将变量n的值（10）保存在栈区[rbp-20]处</span><br></pre></td></tr></table></figure>
 
-        <div class="article-info info-on-right">
-          
+<ol start="2">
+<li><strong>汇编代码第10~11行</strong></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lea rax, [rbp-20] ;将栈区中[rbp-20]处的地址保存在寄存器rax中</span><br><span class="line">mov QWORD PTR [rbp-8], rax ;将rax中保存的地址值保存在栈区[rbp-8]处</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>首先将[rbp-20]处的地址，即变量n所在的地址传入寄存器rax中</li>
+<li>接着将rax中保存的变量n的地址值保存到栈内存中的[rbp-8]处，[rbp-8]处就相当于是存储了指针nptr</li>
+<li>对应源代码第10行的<code>const int* nptr = &amp;n</code></li>
+</ul>
+<ol start="3">
+<li><strong>汇编代码第12~13行</strong></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lea rax, [rbp-20] ;将变量n所在的地址传入寄存器rax中</span><br><span class="line">mov QWORD PTR [rbp-16], rax ;将变量n所在的地址存入[rbp-16]处</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将[rbp-20]处的地址赋给寄存器rax，即rax中存储的是变量n的地址</li>
+<li>将rax中的变量n的地址值保存到栈区的[rbp-16]处</li>
+<li>对应源代码第11行的<code>int* nptr2 = &amp;n</code></li>
+</ul>
+<ol start="4">
+<li><strong>汇编代码14~15行</strong></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov rax, [rbp-20] ;将变量n的所在的地址传入rax中</span><br><span class="line">mov DWORD PTR [rax], 20 ;将变量n的值从10更改为20</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将栈区中[rbp-16]处保存的值赋给寄存器rax，即rax中保存着变量n的地址</li>
+<li>将20传入rax保存的那个地址中</li>
+<li>对应源代码第12行的<code>*nptr2 = 20</code></li>
+</ul>
+<p>在源代码第10行：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span>* nptr = &amp;n;</span><br></pre></td></tr></table></figure>
+
+<p><font color=red>前面加了const，就意味着，不能够修改指针所指向的那个数据对象的值，但是可以改变指针的指向</font>。下图可证明：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201072053943.jpg"></p>
+<p>经过上面对于指针基本用法的学习，我们发现，<code>&amp;</code>运算符在底层是通过<code>lea</code>(load effective address)来实现的，<code>*</code>是通过<code>mov</code>指令来实现的。</p>
+<h2 id="二、数组名和指针"><a href="#二、数组名和指针" class="headerlink" title="二、数组名和指针"></a>二、数组名和指针</h2><p>我们在学习数组的时候，一定都记得老师告诉过我们，数组名是一个指向数组首元素的指针。当时我们只是死记硬背，现在我们来知其所以然。</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201072320516.jpg"></p>
+<p>在上面的程序中，我们定义了一个数组arr，arr中有4个元素，分别是1，2，3，4。结合右面汇编代码的第9~12行，我们可以看出，数组元素是存储在一块连续的内存空间中的。回顾一下：struct中的member并不是真正的连续存储，而是为了满足struct内数据成员的自然对齐和struct的连续存储时的自然对齐，会向内存中添加padding。</p>
+<p>源代码第9行，打印arr的地址，我们发现，右边汇编代码第13~17行，是这样实现的：</p>
+<ol>
+<li>将[rbp-16]的地址保存在寄存器rax中，而结合汇编代码第9行，我们知道，[rbp-16]处保存的值是数组的第一个元素值——1</li>
+<li>将rax中保存的第一个元素的地址传入寄存器rsi中</li>
+<li>printf函数输出的arr的地址值，就是寄存器rsi中的值</li>
+</ol>
+<p>通过汇编语言，我们了解到，在机器底层，数组名在某些情况下，丧失了数组类型和数组大小的信息，退化成了一个指针，而这个指针指向的就是该数组的第一个元素</p>
+<p>我们看下源代码第10行，结合右面汇编代码第18行，我们发现,<code>*arr = 10</code>改变的也是数组第一个元素的值，即arr[0] &#x3D; 10。</p>
+<p>我们看下源代码第11行，结合右面汇编代码第19~23行，我们发现，打印的<code>*arr</code>的值，就是栈内存[rbp-16]处保存的值，也即数组第一个元素arr[0]的值。</p>
+<p>上面是一维数组的情况，那么二维数组呢？</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201072336122.png" alt="image-20220107233600038"></p>
+<p>这次，我们定义了一个二维数组arr，结合汇编代码第7~12行，我们发现，二维数组中的元素仍然是顺序存储在一块连续的内存中，这是编译器对多维数组的一个扁平化处理：将多维处理成一维，从而在一块连续的内存空间中存储多维数组的元素值。</p>
+<p>源代码第12行，打印数组arr的地址，结合右面汇编代码第13~17行，我们发现，打印的是[rbp-32]处的地址，而结合汇编第7行，我们发现，[rbp-32]处存储的是该二维数组第一个元素的值——1，那么我们输出的arr的地址就是该二维数组第一个元素arr[0] [0]的地址，那么我们是不是可以得出，二维数组的数组名退化成一个指针，而该指针所指向的是二维数组中的第一个元素1呢？</p>
+<p>我们来验证一下：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201072347519.png" alt="image-20220107234728409"></p>
+<p>如果arr指向的真是二维数组的第一个元素arr[0] [0]的话，那么源代码第13行应该输出的结果是1，我们看一下该行对应的汇编代码，也就是第20~24行：</p>
+<ul>
+<li>第20行，将[rbp-20]处的地址保存在rax中，也就是数组中第一个元素1的地址保存在寄存器rax中</li>
+<li>第21行，将rax中保存的第一个元素1的地址转移到寄存器rsi中</li>
+<li>printf打印出的值是rsi寄存器中的第一个元素1的地址值</li>
+</ul>
+<p>？？？</p>
+<p>我们不禁发出疑问，如果二维数组名arr指向的真是数组的第一个元素<code>arr[0][0]</code>的话，不应该是把[rbp-32]地址中的值保存在寄存器rax中，rax将第一个元素的值1转移到寄存器rsi中，printf打印出寄存器rsi中的值，也即第一个元素的值——1。可是事实并不是这样，这说明：<font color = red>二维数组名退化成一个指针，且该指针<b>并不是</b>指向数组中的第一个元素<code>arr[0][0]</code></font></p>
+<p>那么数组名arr指向的是哪里呢？</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201072358225.png" alt="image-20220107235839146"></p>
+<p>我们看一下源代码第13行中，打印出arr+1的值，对应右侧汇编代码第18~23行，我们可以发现，rax首先存储的是[rbp-32]处的地址，然后rax又加了12bytes，而加上这12bytes后，刚好，rax中的地址值就是元素4的地址值。</p>
+<p>为什么arr+1后，直接指向了元素4呢？</p>
+<p>这是因为arr真正指向的是arr[0]这个一维数组，arr打印出的地址值是arr[0]这个一维数组的地址值，而arr[0]的地址值和arr[0] [0]的地址是重叠的。所以arr+1后，就指向了arr[1]这个一维数组，而arr[1]的地址又和arr[1] [0]重合。</p>
+<p>因此，对于二维数组arr，arr这个数组名是个二级指针，解一次引用后*arr变成了一级指针，指向arr[0] [0]，再解一次引用后**arr就是arr[0] [0]这个元素的值。</p>
+<p>再体会一下二维数组和指针之间的关系：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201080012029.jpg"></p>
+<h2 id="三、指针的算术和逻辑运算"><a href="#三、指针的算术和逻辑运算" class="headerlink" title="三、指针的算术和逻辑运算"></a>三、指针的算术和逻辑运算</h2><p>针对指针的算术运算有3种：</p>
+<ol>
+<li>单个指针加减一个整型数</li>
+<li>单个指针的自增自减</li>
+<li>两个指针的减法</li>
+</ol>
+<p>指针的加减、自增后新指针的位置在哪里？</p>
+<p>指针加上一个数，是以什么为单位来进行的，以bit为单位还是byte还是，还是以数据对象的大小为单位？</p>
+<p>我们现在可以说：指针的增减是以指针所指向的数据对象的大小为单位的。</p>
+<p>用例子说话：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201092101774.jpg"></p>
+<p>源代码第13行，array+1对应的操作是右侧汇编代码第14行的将rax种的地址值+12，为什么是加12？因为array作为二级指针，指向的是二维数组中的第一个一维数组，而第一个一维数组中有3个int类型的数据，总共的大小是12bytes，指针增减的时候，是以它所指向的数据对象的大小为单位来进行增减的。因此array+1会加上12个bytes，此时的<code>*(array+1)</code>对<code>array+1</code>做第一次解引用，此时，<code>*(array+1)</code>是一个指向二维数组中的第二个一维数组中的第一个值的指针，即指向数据4的指针。然后对array+1做两次解引用，此时就可以得到数据4的值了。</p>
+<p>两个指针之间的加法是非法的。两个指针之间的减法得到的结果是两个指针的地址值相减后的结果除以指针所指向的数据对象的大小，最后得出的结果才是两个指针相减的最终结果。</p>
+<p>下面我们来看看指针的逻辑运算：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201091945142.png" alt="image-20220109194546098"></p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201091945426.png" alt="image-20220109194517365"></p>
+<h2 id="四、堆内存指针"><a href="#四、堆内存指针" class="headerlink" title="四、堆内存指针"></a>四、堆内存指针</h2><p>我们相面的例子中，指针所引用的都是一个栈中的数据（因为这些数据是main函数的local data）。下面我们要用指针去指向堆区中的数据。</p>
+<p>堆heap内存中存放的是我们动态分配的数据对象。堆在栈的下方，也就是栈的低地址方向。堆的生长方向是从低地址生长向高地址，而栈的生长方向是从高地址生长向低地址。栈中的数据随着函数的返回会自动释放掉，因为rsp变了，但是堆中的数据需要自己显示的释放。</p>
+<p>堆中内存空间的分配与释放其实是需要调用系统函数来完成的，但是C语言为我们封装了这些系统函数，就像我们后面将要讲到的标准IO一样，C语言将这些系统函数进行了封装，因此，我们可以不顾底层细节，直接使用C语言封装好的堆内存申请与释放的函数就能够便捷地操作了。</p>
+<p>代码示例：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201092015249.jpg"></p>
+<p>源代码第14行我们使用malloc函数在堆上申请分配了20bytes的内存，这块内存的起始地址由指针p指向。</p>
+<p>源代码第24行我们使用free函数释放了在堆上申请分配的20bytes的内存。</p>
+<p>通过malloc、free函数，我们可以根据程序的需求申请和释放内存。可见，堆内存的使用，增强了程序对于内存的精细化管理程度。</p>
+<h2 id="五、指针使用tips"><a href="#五、指针使用tips" class="headerlink" title="五、指针使用tips"></a>五、指针使用tips</h2><ol>
+<li>不要解引用未初始化的指针</li>
+<li>在函数中不应返回指向其内部局部变量的指针</li>
+</ol>
+<ul>
+<li>在C++中，有一句话叫做：<code>local value cannot return by reference</code></li>
+<li>因为函数在返回时，该函数对应的栈帧已经销毁了，那么保存在栈帧中的数据也就不存在了（实际上还在那个位置，但是那个位置理论上来讲，我们是不能够访问到的）</li>
+</ul>
+<ol start="3">
+<li>避免非指向同一数组内元素的两个指针之间的减法操作</li>
+<li>通过free函数及时清理堆内存，以防止内存泄漏</li>
+<li>不要重复释放一块已经被释放过的堆内存</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -203,247 +346,119 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/06/30/7%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E6%8C%87%E9%92%88%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/30/6%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E6%9E%9A%E4%B8%BE%E3%80%81%E8%81%94%E5%90%88%E3%80%81%E7%BB%93%E6%9E%84%E4%BD%93%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
-  	<time datetime="2022-06-30T12:06:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2022/06/30/6%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E6%9E%9A%E4%B8%BE%E3%80%81%E8%81%94%E5%90%88%E3%80%81%E7%BB%93%E6%9E%84%E4%BD%93%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">6、C语言中枚举、联合、结构体的底层实现</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/30/6%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E6%9E%9A%E4%B8%BE%E3%80%81%E8%81%94%E5%90%88%E3%80%81%E7%BB%93%E6%9E%84%E4%BD%93%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">6、C语言中枚举、联合、结构体的底层实现</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%8C%87%E9%92%88%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text">一、指针的基本使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%95%B0%E7%BB%84%E5%90%8D%E5%92%8C%E6%8C%87%E9%92%88"><span class="toc-number">2.</span> <span class="toc-text">二、数组名和指针</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%8C%87%E9%92%88%E7%9A%84%E7%AE%97%E6%9C%AF%E5%92%8C%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97"><span class="toc-number">3.</span> <span class="toc-text">三、指针的算术和逻辑运算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%A0%86%E5%86%85%E5%AD%98%E6%8C%87%E9%92%88"><span class="toc-number">4.</span> <span class="toc-text">四、堆内存指针</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%8C%87%E9%92%88%E4%BD%BF%E7%94%A8tips"><span class="toc-number">5.</span> <span class="toc-text">五、指针使用tips</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+        
+    </div>
+</aside>
+
+
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/30/5%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
-  	<time datetime="2022-06-30T12:06:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
-</a>
-        </div>
-    	 
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/30/5%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">5、C语言中函数调用的底层实现</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/30/4%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%92%8C%E8%AF%AD%E5%8F%A5%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
-  	<time datetime="2022-06-30T12:05:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/30/4%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%92%8C%E8%AF%AD%E5%8F%A5%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">4、C语言中表达式和语句的底层实现</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/30/3%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
-  	<time datetime="2022-06-30T12:05:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/30/3%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">3、C语言中运算符的底层实现</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/30/2%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%A4%BA%E4%B8%8E%E5%AD%98%E5%82%A8/" class="archive-article-date">
-  	<time datetime="2022-06-30T12:04:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/30/2%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%A4%BA%E4%B8%8E%E5%AD%98%E5%82%A8/">2、C语言中的数据表示与存储</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/30/1%E3%80%81C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%AE%8C%E6%95%B4%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%8F%8AC%E8%AF%AD%E8%A8%80%E7%9A%84%E8%AF%AD%E6%B3%95%E8%A6%81%E7%82%B9/" class="archive-article-date">
-  	<time datetime="2022-06-30T10:40:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/30/1%E3%80%81C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%AE%8C%E6%95%B4%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%8F%8AC%E8%AF%AD%E8%A8%80%E7%9A%84%E8%AF%AD%E6%B3%95%E8%A6%81%E7%82%B9/">C语言的完整生命周期及C语言的语法要点</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -469,9 +484,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,

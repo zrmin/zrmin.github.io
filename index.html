@@ -164,14 +164,14 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-C语言的完整生命周期及C语言的语法要点" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-7、C语言中指针的底层实现" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2022/06/30/C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%AE%8C%E6%95%B4%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%8F%8AC%E8%AF%AD%E8%A8%80%E7%9A%84%E8%AF%AD%E6%B3%95%E8%A6%81%E7%82%B9/">C语言的完整生命周期及C语言的语法要点</a>
+      <a class="article-title" href="/2022/06/30/7%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E6%8C%87%E9%92%88%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">7、C语言中指针的底层实现</a>
     </h1>
   
 
@@ -179,25 +179,897 @@
 
 <!--显示阅读次数完毕-->
         
-        <a href="/2022/06/30/C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%AE%8C%E6%95%B4%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%8F%8AC%E8%AF%AD%E8%A8%80%E7%9A%84%E8%AF%AD%E6%B3%95%E8%A6%81%E7%82%B9/" class="archive-article-date">
-  	<time datetime="2022-06-30T10:40:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
+        <a href="/2022/06/30/7%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E6%8C%87%E9%92%88%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
+  	<time datetime="2022-06-30T12:06:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="一、C语言的完整生命周期"><a href="#一、C语言的完整生命周期" class="headerlink" title="一、C语言的完整生命周期"></a>一、C语言的完整生命周期</h2><p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112091419713.jpg"></p>
+        <p>指针可以实现程序中的数据共享，同时，因为指针，造成了函数传递时参数传递的两种选择：值传递或者指针传递，使用指针传递可以提高程序运行速度，因为值传递时会有数据拷贝。</p>
+<h2 id="一、指针的基本使用"><a href="#一、指针的基本使用" class="headerlink" title="一、指针的基本使用"></a>一、指针的基本使用</h2><p>我们来看一下指针的基本使用：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201072040142.jpg"></p>
+<p>我们看一下执行的结果：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201072043669.png" alt="image-20220107204354624"></p>
+<p>我们来看一下指针的底层的实现：</p>
 <ol>
-<li>预处理阶段</li>
+<li><strong>汇编代码第9行</strong>，将10保存在[rbp-20]处，对应源代码第9行的<code>int n = 10</code></li>
 </ol>
-<p>在预处理阶段，编译器会移除源程序中所有的注释信息，并处理宏指令：宏展开、宏替换以及条件编译。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov DWORD PTR [rbp-20], 10 ;将变量n的值（10）保存在栈区[rbp-20]处</span><br></pre></td></tr></table></figure>
+
 <ol start="2">
-<li>编译优化</li>
+<li><strong>汇编代码第10~11行</strong></li>
 </ol>
-<p>在编译优化阶段，编译器会分析并优化源代码，然后将源代码编译成具体硬件平台的汇编代码。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lea rax, [rbp-20] ;将栈区中[rbp-20]处的地址保存在寄存器rax中</span><br><span class="line">mov QWORD PTR [rbp-8], rax ;将rax中保存的地址值保存在栈区[rbp-8]处</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>首先将[rbp-20]处的地址，即变量n所在的地址传入寄存器rax中</li>
+<li>接着将rax中保存的变量n的地址值保存到栈内存中的[rbp-8]处，[rbp-8]处就相当于是存储了指针nptr</li>
+<li>对应源代码第10行的<code>const int* nptr = &amp;n</code></li>
+</ul>
+<ol start="3">
+<li><strong>汇编代码第12~13行</strong></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lea rax, [rbp-20] ;将变量n所在的地址传入寄存器rax中</span><br><span class="line">mov QWORD PTR [rbp-16], rax ;将变量n所在的地址存入[rbp-16]处</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将[rbp-20]处的地址赋给寄存器rax，即rax中存储的是变量n的地址</li>
+<li>将rax中的变量n的地址值保存到栈区的[rbp-16]处</li>
+<li>对应源代码第11行的<code>int* nptr2 = &amp;n</code></li>
+</ul>
+<ol start="4">
+<li><strong>汇编代码14~15行</strong></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov rax, [rbp-20] ;将变量n的所在的地址传入rax中</span><br><span class="line">mov DWORD PTR [rax], 20 ;将变量n的值从10更改为20</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将栈区中[rbp-16]处保存的值赋给寄存器rax，即rax中保存着变量n的地址</li>
+<li>将20传入rax保存的那个地址中</li>
+<li>对应源代码第12行的<code>*nptr2 = 20</code></li>
+</ul>
+<p>在源代码第10行：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span>* nptr = &amp;n;</span><br></pre></td></tr></table></figure>
+
+<p><font color=red>前面加了const，就意味着，不能够修改指针所指向的那个数据对象的值，但是可以改变指针的指向</font>。下图可证明：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201072053943.jpg"></p>
+<p>经过上面对于指针基本用法的学习，我们发现，<code>&amp;</code>运算符在底层是通过<code>lea</code>(load effective address)来实现的，<code>*</code>是通过<code>mov</code>指令来实现的。</p>
+<h2 id="二、数组名和指针"><a href="#二、数组名和指针" class="headerlink" title="二、数组名和指针"></a>二、数组名和指针</h2><p>我们在学习数组的时候，一定都记得老师告诉过我们，数组名是一个指向数组首元素的指针。当时我们只是死记硬背，现在我们来知其所以然。</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201072320516.jpg"></p>
+<p>在上面的程序中，我们定义了一个数组arr，arr中有4个元素，分别是1，2，3，4。结合右面汇编代码的第9~12行，我们可以看出，数组元素是存储在一块连续的内存空间中的。回顾一下：struct中的member并不是真正的连续存储，而是为了满足struct内数据成员的自然对齐和struct的连续存储时的自然对齐，会向内存中添加padding。</p>
+<p>源代码第9行，打印arr的地址，我们发现，右边汇编代码第13~17行，是这样实现的：</p>
+<ol>
+<li>将[rbp-16]的地址保存在寄存器rax中，而结合汇编代码第9行，我们知道，[rbp-16]处保存的值是数组的第一个元素值——1</li>
+<li>将rax中保存的第一个元素的地址传入寄存器rsi中</li>
+<li>printf函数输出的arr的地址值，就是寄存器rsi中的值</li>
+</ol>
+<p>通过汇编语言，我们了解到，在机器底层，数组名在某些情况下，丧失了数组类型和数组大小的信息，退化成了一个指针，而这个指针指向的就是该数组的第一个元素</p>
+<p>我们看下源代码第10行，结合右面汇编代码第18行，我们发现,<code>*arr = 10</code>改变的也是数组第一个元素的值，即arr[0] &#x3D; 10。</p>
+<p>我们看下源代码第11行，结合右面汇编代码第19~23行，我们发现，打印的<code>*arr</code>的值，就是栈内存[rbp-16]处保存的值，也即数组第一个元素arr[0]的值。</p>
+<p>上面是一维数组的情况，那么二维数组呢？</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201072336122.png" alt="image-20220107233600038"></p>
+<p>这次，我们定义了一个二维数组arr，结合汇编代码第7~12行，我们发现，二维数组中的元素仍然是顺序存储在一块连续的内存中，这是编译器对多维数组的一个扁平化处理：将多维处理成一维，从而在一块连续的内存空间中存储多维数组的元素值。</p>
+<p>源代码第12行，打印数组arr的地址，结合右面汇编代码第13~17行，我们发现，打印的是[rbp-32]处的地址，而结合汇编第7行，我们发现，[rbp-32]处存储的是该二维数组第一个元素的值——1，那么我们输出的arr的地址就是该二维数组第一个元素arr[0] [0]的地址，那么我们是不是可以得出，二维数组的数组名退化成一个指针，而该指针所指向的是二维数组中的第一个元素1呢？</p>
+<p>我们来验证一下：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201072347519.png" alt="image-20220107234728409"></p>
+<p>如果arr指向的真是二维数组的第一个元素arr[0] [0]的话，那么源代码第13行应该输出的结果是1，我们看一下该行对应的汇编代码，也就是第20~24行：</p>
+<ul>
+<li>第20行，将[rbp-20]处的地址保存在rax中，也就是数组中第一个元素1的地址保存在寄存器rax中</li>
+<li>第21行，将rax中保存的第一个元素1的地址转移到寄存器rsi中</li>
+<li>printf打印出的值是rsi寄存器中的第一个元素1的地址值</li>
+</ul>
+<p>？？？</p>
+<p>我们不禁发出疑问，如果二维数组名arr指向的真是数组的第一个元素<code>arr[0][0]</code>的话，不应该是把[rbp-32]地址中的值保存在寄存器rax中，rax将第一个元素的值1转移到寄存器rsi中，printf打印出寄存器rsi中的值，也即第一个元素的值——1。可是事实并不是这样，这说明：<font color = red>二维数组名退化成一个指针，且该指针<b>并不是</b>指向数组中的第一个元素<code>arr[0][0]</code></font></p>
+<p>那么数组名arr指向的是哪里呢？</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201072358225.png" alt="image-20220107235839146"></p>
+<p>我们看一下源代码第13行中，打印出arr+1的值，对应右侧汇编代码第18~23行，我们可以发现，rax首先存储的是[rbp-32]处的地址，然后rax又加了12bytes，而加上这12bytes后，刚好，rax中的地址值就是元素4的地址值。</p>
+<p>为什么arr+1后，直接指向了元素4呢？</p>
+<p>这是因为arr真正指向的是arr[0]这个一维数组，arr打印出的地址值是arr[0]这个一维数组的地址值，而arr[0]的地址值和arr[0] [0]的地址是重叠的。所以arr+1后，就指向了arr[1]这个一维数组，而arr[1]的地址又和arr[1] [0]重合。</p>
+<p>因此，对于二维数组arr，arr这个数组名是个二级指针，解一次引用后*arr变成了一级指针，指向arr[0] [0]，再解一次引用后**arr就是arr[0] [0]这个元素的值。</p>
+<p>再体会一下二维数组和指针之间的关系：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201080012029.jpg"></p>
+<h2 id="三、指针的算术和逻辑运算"><a href="#三、指针的算术和逻辑运算" class="headerlink" title="三、指针的算术和逻辑运算"></a>三、指针的算术和逻辑运算</h2><p>针对指针的算术运算有3种：</p>
+<ol>
+<li>单个指针加减一个整型数</li>
+<li>单个指针的自增自减</li>
+<li>两个指针的减法</li>
+</ol>
+<p>指针的加减、自增后新指针的位置在哪里？</p>
+<p>指针加上一个数，是以什么为单位来进行的，以bit为单位还是byte还是，还是以数据对象的大小为单位？</p>
+<p>我们现在可以说：指针的增减是以指针所指向的数据对象的大小为单位的。</p>
+<p>用例子说话：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201092101774.jpg"></p>
+<p>源代码第13行，array+1对应的操作是右侧汇编代码第14行的将rax种的地址值+12，为什么是加12？因为array作为二级指针，指向的是二维数组中的第一个一维数组，而第一个一维数组中有3个int类型的数据，总共的大小是12bytes，指针增减的时候，是以它所指向的数据对象的大小为单位来进行增减的。因此array+1会加上12个bytes，此时的<code>*(array+1)</code>对<code>array+1</code>做第一次解引用，此时，<code>*(array+1)</code>是一个指向二维数组中的第二个一维数组中的第一个值的指针，即指向数据4的指针。然后对array+1做两次解引用，此时就可以得到数据4的值了。</p>
+<p>两个指针之间的加法是非法的。两个指针之间的减法得到的结果是两个指针的地址值相减后的结果除以指针所指向的数据对象的大小，最后得出的结果才是两个指针相减的最终结果。</p>
+<p>下面我们来看看指针的逻辑运算：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201091945142.png" alt="image-20220109194546098"></p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201091945426.png" alt="image-20220109194517365"></p>
+<h2 id="四、堆内存指针"><a href="#四、堆内存指针" class="headerlink" title="四、堆内存指针"></a>四、堆内存指针</h2><p>我们相面的例子中，指针所引用的都是一个栈中的数据（因为这些数据是main函数的local data）。下面我们要用指针去指向堆区中的数据。</p>
+<p>堆heap内存中存放的是我们动态分配的数据对象。堆在栈的下方，也就是栈的低地址方向。堆的生长方向是从低地址生长向高地址，而栈的生长方向是从高地址生长向低地址。栈中的数据随着函数的返回会自动释放掉，因为rsp变了，但是堆中的数据需要自己显示的释放。</p>
+<p>堆中内存空间的分配与释放其实是需要调用系统函数来完成的，但是C语言为我们封装了这些系统函数，就像我们后面将要讲到的标准IO一样，C语言将这些系统函数进行了封装，因此，我们可以不顾底层细节，直接使用C语言封装好的堆内存申请与释放的函数就能够便捷地操作了。</p>
+<p>代码示例：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201092015249.jpg"></p>
+<p>源代码第14行我们使用malloc函数在堆上申请分配了20bytes的内存，这块内存的起始地址由指针p指向。</p>
+<p>源代码第24行我们使用free函数释放了在堆上申请分配的20bytes的内存。</p>
+<p>通过malloc、free函数，我们可以根据程序的需求申请和释放内存。可见，堆内存的使用，增强了程序对于内存的精细化管理程度。</p>
+<h2 id="五、指针使用tips"><a href="#五、指针使用tips" class="headerlink" title="五、指针使用tips"></a>五、指针使用tips</h2><ol>
+<li>不要解引用未初始化的指针</li>
+<li>在函数中不应返回指向其内部局部变量的指针</li>
+</ol>
+<ul>
+<li>在C++中，有一句话叫做：<code>local value cannot return by reference</code></li>
+<li>因为函数在返回时，该函数对应的栈帧已经销毁了，那么保存在栈帧中的数据也就不存在了（实际上还在那个位置，但是那个位置理论上来讲，我们是不能够访问到的）</li>
+</ul>
+<ol start="3">
+<li>避免非指向同一数组内元素的两个指针之间的减法操作</li>
+<li>通过free函数及时清理堆内存，以防止内存泄漏</li>
+<li>不要重复释放一块已经被释放过的堆内存</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/06/30/7%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E6%8C%87%E9%92%88%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
         
-          <a class="article-more-a" href="/2022/06/30/C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%AE%8C%E6%95%B4%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%8F%8AC%E8%AF%AD%E8%A8%80%E7%9A%84%E8%AF%AD%E6%B3%95%E8%A6%81%E7%82%B9/#more">more >></a>
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-6、C语言中枚举、联合、结构体的底层实现" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/06/30/6%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E6%9E%9A%E4%B8%BE%E3%80%81%E8%81%94%E5%90%88%E3%80%81%E7%BB%93%E6%9E%84%E4%BD%93%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">6、C语言中枚举、联合、结构体的底层实现</a>
+    </h1>
+  
+
+        <!--显示阅读次数-->
+
+<!--显示阅读次数完毕-->
+        
+        <a href="/2022/06/30/6%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E6%9E%9A%E4%B8%BE%E3%80%81%E8%81%94%E5%90%88%E3%80%81%E7%BB%93%E6%9E%84%E4%BD%93%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
+  	<time datetime="2022-06-30T12:06:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一、枚举-enum"><a href="#一、枚举-enum" class="headerlink" title="一、枚举 enum"></a>一、枚举 enum</h2><ol>
+<li><p>枚举类型的实现</p>
+<p>这下面的例子中，我们枚举了周一到周五这五天，那么枚举在底层是如何实现的呢？请看下图：</p>
+</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201071649398.jpg"></p>
+<p>我们在main函数中调用了foo函数，并且传入的参数是枚举类型Weekday中的第一个Mon，在前面的文章中，我们说过，SystemV调用约定中，第一个函数参数的传递使用的寄存器是rdi。在汇编代码第29行，我们发现寄存器edi被赋值为0，可是我们传入的第一个参数是<code>Mon</code>，也就是说，在编译器看来，Mon就是0，0就是Mon。也就是说，枚举类型中的数其实是从0开始的整数。那么这个整数是int类型的，还是short类型的呢？我们可以看一下函数的执行结果：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201071655252.png"></p>
+<p>我们在C源代码第7~9行中使用了宏函数来判断这个Mon参数的类型，发现是int类型的。</p>
+<p>综上，枚举在底层是使用int类型的整数来表示的。而且汇编代码第12行，将寄存器edi中的值，也就是[rbp-4]中的值和0比较，和源代码第16行中将传入参数wd和Mon比较相对应，也可以证实我们的说法。</p>
+<ol start="2">
+<li>枚举类型的存储</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201071728762.jpg"></p>
+<p>可以发现，编译器为enum类型的Weekday分配了4bytes大小的内存，而我们已经知道，枚举类型在底层是通过int来实现的，而一个int就是4bytes大小，由此可见，enum类型中，每次只有一个值是存在的。</p>
+<h2 id="二、联合-union"><a href="#二、联合-union" class="headerlink" title="二、联合 union"></a>二、联合 union</h2><p>一个联合中的多个数据共用一个内存区域。</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201071858320.jpg"></p>
+<p>从上图中的函数执行结果可以看出，编译器为union分配了8bytes的内存空间，这正好是union中最大的数据，即<code>double b</code>所需要的内存空间大小。</p>
+<h2 id="三、结构体-struct"><a href="#三、结构体-struct" class="headerlink" title="三、结构体 struct"></a>三、结构体 struct</h2><p>数组可以将相同类型的数据封装到一起，然后保存在连续的内存中。</p>
+<p>结构体可以将不同类型的数据封装到一起，然后保存在“连续”的内存中。</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201071804873.jpg"></p>
+<p>我们在结构体中封装了一个指向char类型的指针，一个char类型字符和一个long类型的整数，我们来看一下编译器是如何实现struct结构体类型的。我们着重看汇编第10~13行，因此这4行汇编对应着源代码的第16行，也就是创建一个结构体对象。</p>
+<ul>
+<li>在第9行，我们将字符a的ASCII码97保存到[rbp-1]中。对应源代码中的char c &#x3D; ‘a’;</li>
+<li>第10行，我们使用lea指令，将[rbp-1]处的地址赋给寄存器rax，而[rbp-1]处存储的是字符c的内容，那么第19行本质上就是将字符c的地址保存到寄存器rax中</li>
+<li>第11行，我们将rax寄存器中保存的地址值保存到[rbp-32]地址处。对应源代码第16行中的&amp;c</li>
+<li>第12行，我们将字符b的ASCII码98保存到[rbp-24]处，可以看出，字符b只占用了一个BYTE的内存空间，而不是QWORD——8个Byte。对应于源代码第16行中的’b’</li>
+<li>第18行，将整形数10保存到[rbp-16]地址开始的8个字节的内存中。对应于源代码第16行中的10</li>
+</ul>
+<p>整理上述的存储布局，我们可以得到下图：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201071845409.png" alt="image-20220107184546351"></p>
+<p>如此看来，结构体中的数据对象并不是完全在内存中连续存储的。那么在[rbp-23]~[rbp-17]之间的空白是干什么的呢？这其实是padding——用来内存填充。</p>
+<p>为什么有padding？请看下文：</p>
+<h2 id="四、内存数据自然对齐"><a href="#四、内存数据自然对齐" class="headerlink" title="四、内存数据自然对齐"></a>四、内存数据自然对齐</h2><p>在给类中的元素分配内存时，并不是按照数据对象本身的大小给它分配内存的，而是要兼顾CPU处理的性能：当内存中需要被读写的数据，其所在地址满足自然对齐时，CPU处理数据的效率最高。所谓自然对齐，就是被操作数据的内存地址是该数据大小的整数倍。</p>
+<p>我们可以发现，x86-64 gcc 11.2下，各个数据本身的大小如下：</p>
+<table>
+<thead>
+<tr>
+<th align="center">数据类型</th>
+<th align="center">大小(bytes)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">short</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">char</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">指针</td>
+<td align="center">8</td>
+</tr>
+<tr>
+<td align="center">int</td>
+<td align="center">8</td>
+</tr>
+<tr>
+<td align="center">double</td>
+<td align="center">8</td>
+</tr>
+</tbody></table>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201071345842.jpg"></p>
+<p>我们观测一下struct S的大小：发现编译器为struct S分配了24bytes的内存，可是struct S里面的数据总共大小为：$2+1+1+8+8&#x3D;20bytes$，为什么凭空多了4个bytes的大小呢？这其实就是为了保障数据的自然对齐，而多分配了4个padding，也就是多分配了4个bytes的内存填充物。那么这个padding具体放在哪里呢？我们具体分析一下：</p>
+<ol>
+<li>首先一个short a，是2bytes的，放入内存中。我们假设a的最低位地址被放在了rbp-n地址处</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201071409438.png" alt="image-20220107140959360"></p>
+<ol start="2">
+<li>接着是一个char b需要被放入内存，char是1bytes大小，放在rbp-n-2处，满足自然对齐的要求</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201071414901.png" alt="image-20220107141410786"></p>
+<ol start="3">
+<li>接着是一个char c需要被放入内存中，char类型占一个byte，放在rbp-n-3处满足自然对齐的要求</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201071417252.png" alt="image-20220107141701157"></p>
+<ol start="4">
+<li>接着是一个指向int类型的指针d需要被放入内存中，一个指针占用8个bytes，可是rbp-n-4这个地址不是8的倍数，因此，若在rbp-n-4处放置int* d，则不满足自然对齐的要求，而rbp-n-8这个地址则满足自然对齐的要求，因此我们要将d放在rbp-n-8开始的内存中。那么rbp-4和rbp-8之间就有了4个内存空隙，为了填补这个空隙，我们在这个空隙中放入padding。综上，在为d分配内存之前，我们需要先分配4个bytes的padding，然后再为d分配8个bytes的内存。</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201071431655.png" alt="image-20220107143123555"></p>
+<ol start="5">
+<li>最后是为union类型的数据分配内存，我们知道union中的数据共享一块内存空间，因此，这块内存空间需要能够装得下union中占用内存最大的那个数据，我们知道double类型占用8bytes的内存，int占用4bytes大小的内存空间，因此，我们需要为union分配8bytes大小的内存空间。</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201071439399.png" alt="image-20220107143941278"></p>
+<p>综上，我们总共为struct S分配了24bytes大小的内存空间，其中，包括了4个bytes的padding用来保障自然对齐的要求。</p>
+<p>这就完了吗？当然不是，我们看下面这个例子：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201071453901.jpg"></p>
+<p>我们首先为int a分配了4个bytes的空间，其后的char b满足自然对齐的要求，因此不需要padding直接存储就Ok，那么我们应该为struct S分配了$4 + 1 &#x3D; 5bytes$的内存空间，但是我们通过sizeof运算符却发现编译器为struct S分配了8bytes的内存空间，为什么呢？</p>
+<p>因为编译器要保证当结构对象被连续存储时，后一个结构对象的起始地址也满足自然对齐的要求，也就是说编译器要满足为结构对象分配的内存空间是其中最大的数据成员的整数倍。因此上面我们为struct S分配空间时，应该分配其中最大的int类型数据所占用内存空间的整数倍，也就是4的整数倍，因此，当struct S需要5bytes内存时，为了满足4的整数倍的要求，归根到底，是为了满足内存数据对齐的要求，我们需要额外分配3bytes的填充字节padding。 由此，struct S占用了8bytes的内存空间。</p>
+<p>我们来验证一下：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201071519246.jpg"></p>
+<p>在上面的程序中，我们在数组array中存储了两个struct对象，事实证明编译器为这个数组分配了16bytes的内存空间。验证了我们上面说的编译器为了防止结构对象被连续存储的情况，保障后面的结构对象的起始地址也满足自然对齐的存储要求，需要为struct分配是其中最大的member所占用的内存的整数倍的内存空间。一个struct S分配8bytes的内存空间，因此数组array占用了16bytes的内存空间。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/06/30/6%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E6%9E%9A%E4%B8%BE%E3%80%81%E8%81%94%E5%90%88%E3%80%81%E7%BB%93%E6%9E%84%E4%BD%93%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-5、C语言中函数调用的底层实现" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/06/30/5%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">5、C语言中函数调用的底层实现</a>
+    </h1>
+  
+
+        <!--显示阅读次数-->
+
+<!--显示阅读次数完毕-->
+        
+        <a href="/2022/06/30/5%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
+  	<time datetime="2022-06-30T12:06:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>前面讲运算符的时候，有一个函数调用运算符我们没有讲，因为我们要在函数中讲。</p>
+<h2 id="一、函数概述"><a href="#一、函数概述" class="headerlink" title="一、函数概述"></a>一、函数概述</h2><p>函数是一种封装代码的方法，可以避免程序中的代码重复，提高代码可重用性和代码的简洁性、易读性。</p>
+<p>函数中参数的传递有两种方式，分别是：值传递和指针传递。对于按值传递的参数，函数外部的参数和函数内部使用的参数，即实参和形参是两个不同的数据对象，即形参和实参保存在不同的内存区域中，因为按值传递时，形参是对实参数据对象的一个复制，函数内部对形参的改变并不会对实参产生影响。对于按指针传递的参数，函数内部使用的数据对象和函数外部的实参的数据对象是同一个数据对象，因此函数内部对于数据对象做出的修改会反映在一个（块）内存中，这块内存也是实参的内存空间，因此，实参也会受到影响。</p>
+<p>上面的说教不免过于学究，看个例子：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201031545164.png" alt="image-20220103154515858"></p>
+<p>在foo()函数中有4个参数，前两个参数是值传递，函数内和函数外使用的是两个不同内存区域中的数据对象（即使它们的值相同），后两个参数是指针传递，第一个是a pointer to a struct，第二个是a pointer to a function，对于函数指针，可以省略<code>*</code>符号，也就是说foo()函数可以写成：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">foo</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y, Point* p, <span class="type">int</span>(*handler)(<span class="type">int</span>))</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> (*handler)(x + y + p-&gt;x + p-&gt;y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>函数指针的解释：<code>handler</code>的意识是a pointer to a function，<code>*handler</code>的意思是<code>a function</code>，这里的<code>*</code>是解引用运算符，<code>(*handler)(x + y + p-&gt;x + p-&gt;y)</code>的意思是a call to that function。</p>
+<h2 id="二、System-V-AMD64-ABI调用约定"><a href="#二、System-V-AMD64-ABI调用约定" class="headerlink" title="二、System V AMD64 ABI调用约定"></a>二、System V AMD64 ABI调用约定</h2><p>不同平台的编译器在处理函数调用时，遵循的函数调用约定不同，例如在Windows平台上，函数被调用时编译器按照Microsoft x64或者Vector调用约定来对栈内存和寄存器等进行管理，在Unix和类Unix平台上，例如我们经常使用的gcc编译器，就是按照System V AMD64 ABI调用约定来对函数调用时涉及到的栈内存和寄存器等进行分配的。</p>
+<p>由于我经常在Linux平台上做开发，所以我主要讲一下SystemV的调用约定。</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201032036472.jpg" alt="pictures"></p>
+<ol>
+<li><b>参数传递</b></li>
+</ol>
+<p>函数调用时，对于整型和指针型的实参，在调用时，按函数定义中的参数顺序从左到右依次使用<code>rdi</code>、<code>rsi</code>、<code>rdx</code>、<code>rcx</code>、<code>r8</code>、<code>r9</code>这6个寄存器来保存实参，<font color=red>从上图中的第36~41行可以看出来</font>，即分别是把：</p>
+<ul>
+<li>第一个参数1保存在rdi寄存器中</li>
+<li>第二个参数2保存在rsi寄存器中</li>
+<li>第三个参数3保存在rdx寄存中</li>
+<li>第四个参数4保存在rcx寄存器中</li>
+<li>第五个参数5保存在r8寄存器中</li>
+<li>第六个参数6保存在r9寄存器中</li>
+</ul>
+<p>那如果函数接收的参数超过6个了，那么规定的这6个寄存器用完了怎么办呢？答：多出来的参数按照从右往左的顺序压入栈中，通过栈内存来保存。<font color=red>从上图中的第42~43行可以看出来</font>，即分别是把：</p>
+<ul>
+<li>按照从右往左的顺序，我们应该先把8压入栈中，再把7压入栈中，事实上我们也是这么做的，如下：</li>
+<li>第42行，将7压入栈顶指针所指的栈内存中，即<code>[rsp]</code>处</li>
+<li>第43行，将8压入<code>[rsp + 8]</code>处</li>
+<li>我们知道，在计算机中，栈是从高地址往低地址增长的，因此，第42行和第43行的操作等价于先将8压入栈内存，再将7压入栈内存</li>
+</ul>
+<p><font color=green>也许有人会有问题，问什么x和y的值不直接存储在寄存器rdi和rsi中，而是要先存储在栈内存中，然后再间接地赋给寄存器呢？这是因为x和y是函数内部的局部变量，所以它们最开始会被存储到栈内存中。</font></p>
+<p>整型和指针型的参数传递我们已经搞明白了，那么浮点型呢？毕竟，浮点数是我们写程序时常用的。</p>
+<p>对于浮点参数，在SystemV调用约定中，编译器将使用xmm0到xmm7这8个寄存器来进行存储，对于更宽的值，也可能会使用ymm和zmm寄存器来代替xmm寄存器。至于xmm、ymm、zmm都是x86 ISA中名为AVX(Advanced Vector Extensions)的扩展指令集使用的。这些指令集专门用于浮点数计算以及SMID相关的处理。</p>
+<p>举个例子如下：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201032140462.jpg"></p>
+<p>上图的处理流程其实和整型参数传递是大同小异的：</p>
+<ul>
+<li>第47~50行，先将double 1赋给xmm0，将xmm0中的值，即double 1存储在栈内存中，因为double 1是函数中的局部变量。double 2也是这样处理</li>
+<li>第51~55行，就是浮点参数传递的处理流程。按照函数定义时的从左到右的顺序分别将double 1赋给xmm0，double 2赋给xmm1，double 3赋给xmm2，double 4赋给xmm3，double 5赋给xmm4，至此，浮点传参时参数的保存就完成了</li>
+<li>第56~58行，就是我们上面讲过的整型参数传递的处理：分别按从左到右的顺序将参数依次保存在寄存器rdi、rsi和rdx中。</li>
+</ul>
+<ol start="2">
+<li><b>返回值传递</b></li>
+</ol>
+<p>当调用的函数有返回值时，SystemV调用约定规定：</p>
+<ul>
+<li>当返回值为整型且不超过64位时，通过rax寄存器来进行返回值的传递。<font color = red>如上图中第28行和第64行</font></li>
+<li>当返回值为整型且超过64位但不超过128位时，编译器通过使用寄存器rax和rdx来分别保存返回值的低64位和高64位</li>
+<li>当返回值为浮点型时，编译器会使用xmm0和xmm1来进行存储。而当返回值过大时，会使用ymm和zmm。<font color=red>如上图中第6行</font></li>
+</ul>
+<ol start="3">
+<li><b>寄存器的caller-saved 和 callee-saved</b></li>
+</ol>
+<p>SystemV调用约定中规定，如果一个被调函数需要使用到<code>rbx</code>、<code>rbp</code>、<code>rsp</code>的话，那么在该被调函数真正地处理数据（如参数传递处理）之前（被调用前，可以结合下面的Red Zone来理解，在做calle-saved时，该函数并没有被调用），要在该被调函数中将rbx、rbp和rsp进行保存，并在函数返回之前，将它们恢复。这就是<code>callee-saved</code>，<font color=red>如上图中第4-5行、第10-11行、第43-44行</font>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">push rbp ;保存当前的rbp中的值到栈内存中，以便在函数执行完毕后恢复rbp的值</span><br><span class="line">mov rbp, rsp ;将当前rsp的值保存在rbp中，因为在处理被调用的函数时，需要分配栈空间</span><br><span class="line">;因此，需要扩展（分配）一定的栈空间来保存函数中用到的数据，所以rsp在后面会被减去一个值来实现栈空间的分配</span><br></pre></td></tr></table></figure>
+
+<p>还如上图中第7行、第29-30行、第65-66行，以第65-66行为例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">add rsp, 32 ;恢复rsp的值到该函数被调用前的值</span><br><span class="line">pop rbp ;恢复rbp的值为函数调用前的rbp的值，因为函数调用前的rbp的值已经通过push rbp保存在栈内存中了</span><br></pre></td></tr></table></figure>
+
+<p>而对于rbx、rbp、rsp之外的其他寄存器，则由调用函数根据需要自行保存和恢复必要的寄存器的值。这就是<code>caller-saved</code>。</p>
+<ol start="4">
+<li><b>其他约定</b></li>
+</ol>
+<p>SystemV还有一些重要的其他约定：</p>
+<ul>
+<li>栈顶地址（以字节为单位）要16字节对齐，也就是说栈顶的地址值要是16的倍数</li>
+<li>不同于用户函数的调用过程，<font color=red>系统调用函数</font>（System Call）需要使用寄存器rdi、rsi、rdx、r10、r8、r9来传递参数</li>
+<li>在栈顶往低地址方向留出128字节的空间，作为<code>Red Zone</code></li>
+</ul>
+<p>Red Zone是在栈顶增长方向专门为叶子函数留出的128字节空间，<font color = blue>注意：栈顶往上的地方有Red Zone，并不是栈顶往下包含了Red Zone。</font>所谓<code>叶子函数</code>就是说该函数不再调用其他的函数，如本节例子中，main()函数调用foo()函数，foo()函数又调用bar()函数，但是bar()函数并没有调用其他函数，因此，bar()函数就是我们所说的<code>叶子函数</code>。Red Zone空间的留出是为了减少叶子函数中的修改rsp，即扩充栈内存空间的时间，提升函数的执行速度。</p>
+<p>举个例子如下：我们在Red Zone的128字节中存储了33个整数，即132个字节，因此需要修改rsp，即栈顶的位置。</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201032314258.jpg"></p>
+<p>又一例：在本例中，我们在Red Zone的128字节中，存储了32个整数，刚好使用了128字节的空间，因此，Red Zone刚好可以满足我们的需求，所以我们不需要调整rsp的大小，即栈顶的位置不需要进行调整，也即栈内存空间大小的调整时间被节省下来了。</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201032337784.jpg"></p>
+<p>bar()函数是我们的叶子函数，当我们在处理foo()函数的时候，就在foo()函数的栈顶往低地址方向留出了128字节的空间给bar()函数使用，我们可以发现，如果我们在bar()函数中，存储了32个整数（每个整数4个字节）的话，是不需要修改rsp的值的，也就是说，我们为叶子函数留出的Red Zone的空间大小是足够bar()函数使用的，那么就可以节省下来bar()函数栈调整栈内存空间大小的操作的时间，进而提升函数的执行速度。但是如果我们要存储33个整数的话，Red Zone的128字节的空间就不够用了，我们需要额外再分配4个字节的空间来存储第1个整数，这时，在rsp，即栈顶上方为叶子函数又自动分配了128字节的Red Zone，那么现在这128字节的空间就足以存储下第2~第33共计32整数了。</p>
+<hr/>
+
+<h3 id="System-V-AMD64-ABI调用约定总结"><a href="#System-V-AMD64-ABI调用约定总结" class="headerlink" title="System V AMD64 ABI调用约定总结"></a>System V AMD64 ABI调用约定总结</h3><p>函数调用时传递参数的方法根据不同的操作系统会有所不同，例如linux规定在64位x86寄存器上，前6个整型参数要通过rdi、rsi、rdx、rcx、r8、r9来传递。一个操作系统关于入参方式的规定就是应用程序二进制接口（Application Binary Interface, ABI）。</p>
+<hr/>
+
+
+
+<ol start="5">
+<li><b>栈帧</b></li>
+</ol>
+<p>当一个函数被调用时，操作系统会为其建立一个进程，该进程拥有一块内存空间VAS，即Virtual Address Space——虚拟地址空间。当一个函数被调用时，会在栈内存中保存该函数需要用到的数据，这些数据有返回值、实参、局部变量等，但如果把这些数据看成一个整体，这个整体就代表了一个被调函数的信息，我们这样一个数据块叫做栈帧Stack Frame。</p>
+<p>在进程的VAS中，栈是从高地址生长到低地址，当我们需要的栈空间大小不足或者栈空间富余时，我们通过调整rsp的值，即栈顶指针的值来调整栈空间的大小。rbp保存的是一个栈帧的底，也就是一个栈帧开始的地址，rsp保存的是一个栈帧结束的地址。</p>
+<p>当发生函数调用时，有一下几件基本的事情要做：</p>
+<ul>
+<li>将<code>call</code>指令的下一条指令的地址压入栈中，也就是返回地址被压入栈中，以便通过ret指令将程序执行流程返回，此时rsp更新</li>
+<li>发生<code>callee-saved</code>，将rsp的旧值，也就是上一个栈帧的起始位置压入栈中，方便在被调函数返回时，找到上一个栈帧的起始位置，也就是调用函数的有用的数据块。此时，rsp的值再次更新。<code>push rbp</code></li>
+<li>仍然进行<code>callee-saved</code>，将rsp的值保存在rbp中，方便使用rbp来处理被调函数的数据（比如实参、局部变量的存储，数据的定位等）。<code>mov rbp, rsp</code></li>
+<li>减小rsp的值（叶子函数如果所需要存储在栈内存中的数据大小未超过128字节的Red Zone，便不需要这一步），来扩大栈内存，用来为下面进行的被调函数的数据保存开辟空间。<code>sub rsp ...</code></li>
+<li>被调函数的实参、局部变量、寄存器等的数据处理</li>
+<li>（如果有第三步，本步执行）增加rsp的值来实现销毁栈区的目的，因为这个被调函数的任务已经完成，为了减少不必要的内存浪费，我需要释放掉这块被占用的内存，是上面第三步减少rsp值的逆操作。<code>add rsp ...</code></li>
+<li>恢复rbp的值，来标识上一个函数的栈帧，也就是用来标识上一个函数的数据块。此时，rsp的值更新。<code>pop rbp</code></li>
+<li>返回到<code>call</code>指令的下一条指令地址处去执行那条指令。此时上面第一步中的返回地址被从栈中弹出，rsp的值再次更新，此时，rsp所指向的地方正式发生调用前的栈帧的顶点处。<code>ret</code></li>
+</ul>
+<p>注意：x86中，恢复rsp和rbp的工作，也就是上面倒数第二步和倒数第3步，可以由一条<code>leave</code>指令来完成。<code>leave</code>指令相当于：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov rsp, rbp ;是建立栈帧时mov rbp, rsp的逆操作</span><br><span class="line">pop rbp ;恢复rbp的值，此时之前push rbp时保存在栈中的值又被弹出到rbp中</span><br></pre></td></tr></table></figure>
+
+<p>每一次发生函数调用时，都会像上面那样操作，但是进程的VAS的大小毕竟是有限的，也即是说栈空间的大小是有限的，如果函数a调用函数b，函数b又调用函数c，函数c又调用函数d……如此反复，那么当函数的调用重数太大时，我们的栈空间一定是会被填满的，那时，如果还有新的函数n被调用，VAS将没有空间可以用来建立函数n的栈帧，那时，就会发生<code>Stack Overflow</code>的错误。这个错误，有编程经验的人一定是耳熟能详了。</p>
+<h2 id="三、递归函数的尾递归调用优化"><a href="#三、递归函数的尾递归调用优化" class="headerlink" title="三、递归函数的尾递归调用优化"></a>三、递归函数的尾递归调用优化</h2><p>递归函数就是自己调用自己的函数，相信大家都知道。</p>
+<p>通过上面的学习，我们都知道，当调用一个函数时，会产生栈帧，如果一个递归函数，自己调用自己的深度太大，导致进程的VAS无法满足创建一个新的栈帧的空间需求了，便会发生<code>Segmentation Fault</code>错误。而这一切都是因为栈帧太多了，而尾递归调用优化就要用来解决函数栈帧太多，VAS放不下的问题。</p>
+<p>递归大家都明白，那么什么是尾递归呢？所谓尾递归，就是函数结束前的最后一个操作是调用一个函数，除了调用一个函数就结束外，不能有附加的任何额外操作。也即被调用的这个函数处于调用函数的末尾，是调用函数return前进行的最后一个操作。</p>
+<p>尾递归调用举例：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201050802697.png" alt="image-20220105080211538"></p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201050804584.png" alt="image-20220105080451501"></p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201050806212.png" alt="image-20220105080603139"></p>
+<p>尾递归调用优化通常会使用跳转指令，如<code>jne</code>、<code>je</code>、<code>jle</code>等来代替<code>call</code>指令以避免栈帧的过度创建，达到节省栈内存的作用，本质上是使用循环来实现递归调用。</p>
+<p>我们来看看代码，更让人信服：</p>
+<p>下面是尾递归调用不优化的版本，可以看出，尾递归调用不优化的时候，在每次调用fact2()函数时，都使用了<code>call</code>指令（第18行），也即每次都要建立一个栈帧，如果我们传入的参数<code>n</code>过大，那么fact2()函数将会被调用很多次，那么进程的VAS可能会被用光。那么优化后呢？</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201050835585.jpg"></p>
+<p>我们来具体讲解一下不优化的尾递归调用为什么会造成栈内存的耗尽：</p>
+<ul>
+<li><p>我们在主函数中调用fact2()函数，由此建立了第一个栈帧，就是汇编代码第2行、第3行、第4行的<code>push</code>、<code>move</code>、<code>sub</code>指令进行的操作</p>
+</li>
+<li><p>首先我们知道寄存器edi中保存了函数第一参数n的值，寄存器esi中保存了函数第二参数res的值</p>
+</li>
+<li><p>将edi中的值，即n的值保存到栈区[rbp-4]处</p>
+</li>
+<li><p>将esi中的值，即res的值保存到栈区[rbp-8]处</p>
+</li>
+<li><p>然后比较[rbp-4]处的值是否和0相等，即源代码第11行的<code>if(n == 0)</code></p>
+</li>
+<li><p>若n的值与0相等，则不跳转而是继续执行下一条指令，也即汇编代码第9行的指令</p>
+</li>
+<li><p>将[rbp-8]处保存的res的值赋给寄存器eax保存，通过上面的SystemV调用约定中的返回值约定，我们知道eax中保存的是返回值</p>
+</li>
+<li><p>接着无条件跳转到标号<code>.L3</code>处执行栈帧的清理和函数返回操作</p>
+</li>
+<li><p>如果n的值与0不相等，则跳转到标号<code>.L2</code>处继续执行</p>
+</li>
+<li><p>此时，将栈内存[rbp-8]处保存的res的值保存在寄存器eax中</p>
+</li>
+<li><p>将eax与[rbp-4]处的值有符号相乘，也就是源代码第12行中的<code>res * n</code>，并将结果保存在寄存器eax中</p>
+</li>
+<li><p>接着，将栈区[rbp-4]处的值，即n的值保存在寄存器edx中</p>
+</li>
+<li><p>将edx中的值自减1，也就是源代码第12中的<code>n - 1</code></p>
+</li>
+<li><p>将eax的值赋给寄存器esi，也就是res*n的值赋给寄存器esi，我们知道寄存器esi负责函数第二参数的传递</p>
+</li>
+<li><p>将edx的值赋给寄存器edi，我们知道寄存器edi保存的是函数第一参数的值</p>
+</li>
+<li><p>最后，再次调用fact2函数，即汇编代码中第18行的<code>call fact2</code></p>
+</li>
+<li><p>进入fact2函数，我们发现，它有一次建立了栈帧，之后的操作同上</p>
+<p>我们发现，未优化的fact2函数每次<code>call</code>调用时，都要建立一个栈帧，这样在fact2函数第一参数n很大的情况下，将会建立许多栈帧，进程VAS的空间可能会被耗尽。发生<code>Stack Overflow</code>或者<code>Segmentation Fault</code>的错误。</p>
+<p>优化之后的尾递归调用如下：</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201050828989.png" alt="image-20220105082828773"></p>
+<p>可以发现，优化之后的尾递归调用，使用跳转指令来代替函数调用指令，如上图中第8行使用<code>jne</code>来替代了不优化版本的第18行的<code>call</code>指令。也就是说，优化后的尾递归调用采用循环的方法来实现递归。这样，在进程的VAS中，我们只需要建立一个栈帧，然后通过循环修改栈帧中保存的数据值，来实现递归的功能。</p>
+<p>我们来仔细分析一下优化后的实现思路：</p>
+<ul>
+<li><p>我们在主函数中调用fact2()函数，因此建立了一个栈帧（其实，优化太大，直接把结果40320给了寄存器esi，直接不调用了，我们假装主函数调用了一次fact2()函数，那么将建立一个栈帧）</p>
+</li>
+<li><p>根据上面讲的SystemV调用约定中的函数参数传递约定，我们知道寄存器edi中保存着第一个参数n的值，寄存器esi中保存着第二个参数res的值</p>
+</li>
+<li><p>首先将esi的值，即res的值赋给寄存器eax。根据上面讲的SystemV调用约定的返回值传递约定，我们知道返回值大都使用寄存器eax来进行保存</p>
+</li>
+<li><p>然后<code>test</code>指令检查<code>ZF</code>位 是否为1，也即检查edi中的值是否为0，也就是C代码第11行中的<code>if(n == 0)</code></p>
+</li>
+<li><p>若<code>ZF</code>位为1，即若n的值为0，那么就跳转到标号<code>.L5</code>处，执行<code>ret</code>指令，该函数结束，返回值已经包含在了寄存器<code>eax</code>中，也就是C代码第11行中的<code>return res</code></p>
+</li>
+<li><p>若<code>ZF</code>位不为1，即若n的值不为0，那么就继续执行下一条指令，也就是标号<code>.L2</code>中的指令，也就是C代码第12行中的<code>else</code></p>
+</li>
+<li><p>将寄存器eax中的值和寄存器edi中的值有符号相乘，并把乘积保存在寄存器eax中。根据上面的步骤，我们知道，eax中的值是res，edi中的值是n，也就是C代码第12行中的<code>res*n</code></p>
+</li>
+<li><p>将edi中的值自减1，edi中保存的是第一个参数n的值，也就是C代码第12行中的<code>n-1</code></p>
+</li>
+<li><p>最后是<code>jne</code>指令实现条件跳转，检查<code>ZF</code>是否为0，也就是上一步中的edi自减1后是否不是0，若不是0，则跳转到标号<code>.L2</code>处继续执行，这一步就是上面所说的<font color=green>尾递归调用优化，通过循环来实现递归</font></p>
+</li>
+<li><p>如此反复，直到寄存器edi中的值，也即函数第一个参数n的值为0时，不再进行跳转，而是继续指令下一条语句，也就是标号<code>.L5</code>中的指令<code>ret</code>，而返回值，也就是函数的第二参数，已经在反复的循环中被更新，且更新后的值都被保存在寄存器eax中</p>
+</li>
+</ul>
+<p>我们发现，优化后的fact2()函数的栈帧始终只有一个，而未优化的fact2()函数，却随着每一个的调用都建立一个栈帧，如果fact2()函数的第一参数n的值很大，那么建立的栈帧将会很多，进程VAS的空间有可能会被耗尽。</p>
+<h2 id="四、参数求值顺序"><a href="#四、参数求值顺序" class="headerlink" title="四、参数求值顺序"></a>四、参数求值顺序</h2><p>下面给出使用不同编译器编译同一份代码产生不同结果的例子：</p>
+<p>例1：gcc编译器</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201050950056.png" alt="image-20220105095051935"></p>
+<p>可以发现，gcc编译器是从右往左计算参数n的值的。</p>
+<p>例2：clang编译器</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201050957524.png" alt="image-20220105095707413"></p>
+<p>可以发现，clang编译器是按照从左往右的顺序来计算参数n的值的。</p>
+<p>为什么gcc和clang编译器它们的求值顺序不一样呢？其实我们可以从clang编译器给出的Warning来得出答案：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201050959340.png" alt="image-20220105095920216"></p>
+<p>也就是说，<font color=red>对于参数n，产生了多个无序的修改</font>。就像GCC按照从右往左的顺序修改参数n的值而clang按照从左往右的顺序修改参数n的值一样。</p>
+<p>归根究底，编译器对于参数的无序修改是因为C标准中并未规定函数中参数的求值顺序。</p>
+<p>这告诫我们，<font color=red>在写函数的时候，不要写出需要依赖特定参数求值顺序才能得到正确结果的函数</font>。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/06/30/5%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-4、C语言中表达式和语句的底层实现" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/06/30/4%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%92%8C%E8%AF%AD%E5%8F%A5%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">4、C语言中表达式和语句的底层实现</a>
+    </h1>
+  
+
+        <!--显示阅读次数-->
+
+<!--显示阅读次数完毕-->
+        
+        <a href="/2022/06/30/4%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%92%8C%E8%AF%AD%E5%8F%A5%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
+  	<time datetime="2022-06-30T12:05:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>前面我们说了C语言中的运算符，它提供了数据运算的原子操作。但是当存在多个运算符时，C语言是如何保证数据的正确处理的呢？</p>
+<h2 id="一、表达式"><a href="#一、表达式" class="headerlink" title="一、表达式"></a>一、表达式</h2><p>表达式expression，是操作符（运算符）operator和操作数operand的结合。例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="number">1</span> + <span class="number">2</span>) * <span class="number">3</span> + <span class="number">4</span> / <span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<p>当表达式中有多个运算符和操作数时，C语言会通过运算符的优先级和结合性来确保表达式运算的正确性。以上面为例：<code>*</code>和<code>/</code>的优先级比<code>+</code>要高，因此，我们要先计算<code>(1 + 2) * 3</code>和<code>4 / 5</code>的值，然后再计算两个结果的和，最终得出最后的值。但是<code>*</code>和<code>/</code>中哪个先进性运算呢？这就要看<code>*</code>和<code>/</code>的结合性了，它们都是左结合的，在上面的例子中，<code>*</code>在<code>/</code>的左面，因此根据左结合性，我们要先算<code>*</code>，再算<code>/</code>。</p>
+<p>对于这种表达式，在编译时，它的计算顺序会显现在AST(Abstract Syntax Tree)上，这是编译原理的内容，在后期，Meng语言和编译器的项目会用到编译原理。我会将编译原理的学习内容放在编译原理的项目中。</p>
+<h2 id="二、语句"><a href="#二、语句" class="headerlink" title="二、语句"></a>二、语句</h2><p>语句statement，是构成程序的最大粒度的单位。</p>
+<p>语句可以分为5种：</p>
+<ol>
+<li>复合语句</li>
+<li>表达式语句</li>
+<li>选择语句</li>
+<li>迭代语句</li>
+<li>跳转语句</li>
+</ol>
+<p>复合语句是指以<code>&#123;&#125;</code>包裹起来的语句。</p>
+<p>表达式语句有赋值语句：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">2</span>;</span><br><span class="line">b -= <span class="number">3</span>;</span><br><span class="line">c = a * b;</span><br></pre></td></tr></table></figure>
+
+<p>选择语句有<code>if_else</code>、<code>switch case</code>。</p>
+<p><code>if_else</code>的底层实现如下：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112142154781.png"></p>
+<p>可以看出，<code>if_else</code>的底层实现采用的是<code>cmp</code>来判断if的条件判断是否成立，然后<code>jne</code>来进行跳转。</p>
+<ul>
+<li>下面我们来看一看<code>switch case</code>的底层实现：</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112142208585.png" alt="image-20211214220825490"></p>
+<p>可以看出<code>switch_case</code>也是通过比较a的值，然后跳转到对应的地址，执行相应的运算的。</p>
+<p>迭代语句有<code>for</code>、<code>while</code>、<code>do_while</code>。</p>
+<p>我们以<code>do_while</code>为例，其实迭代语句的底层实现大同小异：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112142213141.png" alt="image-20211214221359040"></p>
+<p>从上图的汇编中，我们可以看出，先打印a的值，然后将a的值减一后送回栈中存储a的值的地址处，然后比较a的旧值是否为0，因为我们的while中的条件是<code>a--</code>，所以比较的是a原本的值，而不是<code>a--</code>后的值。</p>
+<p>从上图的汇编代码中，我们也可以看出<code>a--</code>操作的本质：</p>
+<ol>
+<li>将a的值送到栈中的一个地址处</li>
+<li>将栈中存储a的值的那个地址出的值（a的值）赋值给一个寄存器eax</li>
+<li>将eax的值减1后送给寄存器ecx</li>
+<li>将ecx的值送到栈中存储a的值的地址处去</li>
+<li>下面的操作使用的是eax寄存器中的值，即a的旧值（将eax的值与0作比较，决定是否结束迭代），而非a–之后的新值，即ecx中的值</li>
+</ol>
+<p>下面我们将<code>a--</code>替换成<code>--a</code>来观察一下<code>a--</code>和<code>--a</code>到底那个更快：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112142221835.png" alt="image-20211214222105732"></p>
+<p>可以看出当我们使用<code>--a</code>而非<code>a--</code>的时候，汇编代码中是这样操作的：</p>
+<ol>
+<li>将a的值送到栈中的某个地址处</li>
+<li>将栈中存储a的值的那个地址处的值，即将a的值送往寄存器eax</li>
+<li>将eax减1后送往原栈中保存a值的地址</li>
+<li>后续的操作使用的是eax中的值（将eax的值与0作比较，决定是否结束迭代）</li>
+</ol>
+<p>我们可以明显地看出来，<code>--a</code>比<code>a--</code>在运算的时候，节约了一个寄存器<code>ecx</code>，也就是说，C语言在做<code>a--</code>的时候需要一个额外的空间来存储a的旧值，以做操作，因为操作的是a的旧值。而<code>--a</code>则不需要申请额外的空间来存储a的值。</p>
+<p>综上，<code>--a</code>比<code>a--</code>执行效率更高。</p>
+<p>其他的迭代语句，如for和while的底层实现都是大同小异的。只要理解了<code>do while</code>，也自然可以<code>举一隅以三隅反</code>。</p>
+<p>跳转语句有<code>break</code>、<code>continue</code>、<code>return</code>、<code>goto</code>。</p>
+<p>我们看一下<code>goto</code>的底层实现：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112142236125.png" alt="image-20211214223620035"></p>
+<p>从上图的汇编代码中，我们可以看出，goto语句也是cmp条件比较，如果跳转不满足就<code>jne</code>跳转到指定的地方去执行特定的操作。其他的跳转语句的实现方式和<code>goto</code>大同小异。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/06/30/4%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%92%8C%E8%AF%AD%E5%8F%A5%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-3、C语言中运算符的底层实现" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/06/30/3%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">3、C语言中运算符的底层实现</a>
+    </h1>
+  
+
+        <!--显示阅读次数-->
+
+<!--显示阅读次数完毕-->
+        
+        <a href="/2022/06/30/3%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
+  	<time datetime="2022-06-30T12:05:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>C语言运算符可以大体分成7类：算术运算符、关系运算符、位运算符、赋值运算符、逻辑运算符、成员访问运算符、其他运算符。</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112111344426.jpg" alt="IMG_20211211_134352"></p>
+<p>其中，算术运算符、关系运算符、位运算符、赋值运算符都是基础的操作，它们都有具体硬件平台对应的机器指令。</p>
+<h2 id="一、算术运算符"><a href="#一、算术运算符" class="headerlink" title="一、算术运算符"></a>一、算术运算符</h2><ol>
+<li>加、自增 add</li>
+<li>减、自减 sub</li>
+<li>乘 mul</li>
+<li>除、取余 div（除的同时，余数也会被保存在寄存器中）</li>
+</ol>
+<h2 id="二、关系运算符"><a href="#二、关系运算符" class="headerlink" title="二、关系运算符"></a>二、关系运算符</h2><p>关系运算符通过<code>cmp</code>指令来比较两个数的大小关系，并根据比较来更改<code>FLAGS</code>寄存器中的状态位的值，接着通过<code>set</code>指令，如<code>setg</code>、<code>setne</code>等来写入比较的结果。</p>
+<p>FLAGS寄存器中，常用到的状态位如下：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112111354578.jpg" alt="IMG_20211211_135408"></p>
+<h2 id="三、位运算符"><a href="#三、位运算符" class="headerlink" title="三、位运算符"></a>三、位运算符</h2><ol>
+<li>按位与 and</li>
+<li>按位或 or</li>
+<li>按位非 not</li>
+<li>左移 shl</li>
+<li>右移 shr</li>
+</ol>
+<h2 id="四、赋值运算符"><a href="#四、赋值运算符" class="headerlink" title="四、赋值运算符"></a>四、赋值运算符</h2><p>赋值运算符常使用<code>mov</code>指令来实现值的传递和赋予。</p>
+<h2 id="五、逻辑运算符"><a href="#五、逻辑运算符" class="headerlink" title="五、逻辑运算符"></a>五、逻辑运算符</h2><p>我们以与为例子来看：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112111741518.png" alt="image-20211211174149351"></p>
+<p>上面的汇编语言还是进行了一些优化，我们来看未优化的版本：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112111746150.png" alt="1639202572610"></p>
+<p>在未优化的版本中，我们看到很清楚，通过cmp指令来比较第一个逻辑变量的真假，如果为假，则跳过第二个逻辑变量真假的判断，直接将<code>logical</code>变量所在的栈的地址处的值赋为假，这也符合C语言中的<code>短路效应</code>。若第一个逻辑变量为真，则判断第二个逻辑变量的真假。</p>
+<p>与优化版本做对比后，我们可以发现，优化后的版本，加少了对栈内存空间的访问和分支跳转的情况（加少量CPU分支预测错误造成的CPU时间的浪费），这可以提升程序的性能。</p>
+<h2 id="六、成员访问运算符"><a href="#六、成员访问运算符" class="headerlink" title="六、成员访问运算符"></a>六、成员访问运算符</h2><p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112111756589.png" alt="image-20211211175605504"></p>
+<p>成员访问运算符我们以取地址运算符&amp;和解引用运算符*为例：</p>
+<p>对于取地址运算符，对应于<code>lea</code>，即<code>load effective address</code>，将a变量的地址取出来存入b变量在栈内存中的地址处。</p>
+<p>对于解引用运算符，我们将b变量在栈内存中的内容取出来放入寄存器rax中，然后根据rax中的地址值，从这个地址值对应的内存中取出值存入变量c在栈内存中的地址中去。</p>
+<h2 id="七、其他运算符"><a href="#七、其他运算符" class="headerlink" title="七、其他运算符"></a>七、其他运算符</h2><ol>
+<li>sizeof()</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112111807114.png" alt="image-20211211180747042"></p>
+<p>sizeof()运算符在编译时就被求出来，直接以立即数的形式包含在汇编代码中。</p>
+<ol start="2">
+<li>强制类型转换运算符type()</li>
+</ol>
+<p>我们上一章提到了C语言中的隐式类型转换来说明对于同一块数据的不同指令解释可以带来不同的结果，其实强制类型转换和隐式类型转换的本质是一样的，它们都是对于同一块二进制数据的不同解释方式。详见如下：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112111819030.png"></p>
+<p>我们将变量b的内容传到寄存器rax中，它是64位的，但是在强制类型转换时，我们只取了rax寄存器的低16位，即ax的值赋予变量c。也就是说，强制类型转换其实和隐式类型转换在本质上是一样的，都是同一块数据，在不同指令下的不同解释。</p>
+<ul>
+<li>注意: 隐式类型转换发生在低精度像高精度转换的时候，而强制类型转换是由高转低。</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/06/30/3%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-2、C语言中的数据表示与存储" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/06/30/2%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%A4%BA%E4%B8%8E%E5%AD%98%E5%82%A8/">2、C语言中的数据表示与存储</a>
+    </h1>
+  
+
+        <!--显示阅读次数-->
+
+<!--显示阅读次数完毕-->
+        
+        <a href="/2022/06/30/2%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%A4%BA%E4%B8%8E%E5%AD%98%E5%82%A8/" class="archive-article-date">
+  	<time datetime="2022-06-30T12:04:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>C语言中的数据，有常量和变量，我们最熟悉的是整数int。C语言中提供了unsigned int和signed int两种类型，也即无符号整数和有符号整数，这为我们提升对程序的控制能力提供了帮助，例如在内存地址的寻找上，我们知道它肯定是非负的，因此，可以将一个变量声明为unsigned int类型，这样这个变量就可以存储范围更大的数据了。</p>
         
       
 
@@ -221,7 +1093,84 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2022/06/30/C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%AE%8C%E6%95%B4%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%8F%8AC%E8%AF%AD%E8%A8%80%E7%9A%84%E8%AF%AD%E6%B3%95%E8%A6%81%E7%82%B9/">展开全文 >></a>
+          <a class="article-more-a" href="/2022/06/30/2%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%A4%BA%E4%B8%8E%E5%AD%98%E5%82%A8/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-1、C语言的完整生命周期及C语言的语法要点" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/06/30/1%E3%80%81C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%AE%8C%E6%95%B4%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%8F%8AC%E8%AF%AD%E8%A8%80%E7%9A%84%E8%AF%AD%E6%B3%95%E8%A6%81%E7%82%B9/">C语言的完整生命周期及C语言的语法要点</a>
+    </h1>
+  
+
+        <!--显示阅读次数-->
+
+<!--显示阅读次数完毕-->
+        
+        <a href="/2022/06/30/1%E3%80%81C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%AE%8C%E6%95%B4%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%8F%8AC%E8%AF%AD%E8%A8%80%E7%9A%84%E8%AF%AD%E6%B3%95%E8%A6%81%E7%82%B9/" class="archive-article-date">
+  	<time datetime="2022-06-30T10:40:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一、C语言的完整生命周期"><a href="#一、C语言的完整生命周期" class="headerlink" title="一、C语言的完整生命周期"></a>一、C语言的完整生命周期</h2><p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112091419713.jpg"></p>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/06/30/1%E3%80%81C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%AE%8C%E6%95%B4%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%8F%8AC%E8%AF%AD%E8%A8%80%E7%9A%84%E8%AF%AD%E6%B3%95%E8%A6%81%E7%82%B9/">展开全文 >></a>
         </p>
       
 

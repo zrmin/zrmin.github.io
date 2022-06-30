@@ -6,17 +6,28 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Tag: C | 张润民博客</title>
+  <title>3、C语言中运算符的底层实现 | 张润民博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="记录自己学习的内容">
-<meta property="og:type" content="website">
-<meta property="og:title" content="张润民博客">
-<meta property="og:url" content="http://example.com/tags/C/index.html">
+  <meta name="description" content="C语言运算符可以大体分成7类：算术运算符、关系运算符、位运算符、赋值运算符、逻辑运算符、成员访问运算符、其他运算符。  其中，算术运算符、关系运算符、位运算符、赋值运算符都是基础的操作，它们都有具体硬件平台对应的机器指令。 一、算术运算符 加、自增 add 减、自减 sub 乘 mul 除、取余 div（除的同时，余数也会被保存在寄存器中）  二、关系运算符关系运算符通过cmp指令来比较两个数的大">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3、C语言中运算符的底层实现">
+<meta property="og:url" content="http://example.com/2022/06/30/3%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/index.html">
 <meta property="og:site_name" content="张润民博客">
-<meta property="og:description" content="记录自己学习的内容">
+<meta property="og:description" content="C语言运算符可以大体分成7类：算术运算符、关系运算符、位运算符、赋值运算符、逻辑运算符、成员访问运算符、其他运算符。  其中，算术运算符、关系运算符、位运算符、赋值运算符都是基础的操作，它们都有具体硬件平台对应的机器指令。 一、算术运算符 加、自增 add 减、自减 sub 乘 mul 除、取余 div（除的同时，余数也会被保存在寄存器中）  二、关系运算符关系运算符通过cmp指令来比较两个数的大">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112111344426.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112111354578.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112111741518.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112111746150.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112111756589.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112111807114.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112111819030.png">
+<meta property="article:published_time" content="2022-06-30T12:05:30.000Z">
+<meta property="article:modified_time" content="2022-06-30T12:09:19.813Z">
 <meta property="article:author" content="张润民">
+<meta property="article:tag" content="C">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112111344426.jpg">
   
     <link rel="alternative" href="/atom.xml" title="张润民博客" type="application/atom+xml">
   
@@ -162,188 +173,89 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-3、C语言中运算符的底层实现" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2022" class="archive-year">2022</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/30/7%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E6%8C%87%E9%92%88%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
-  	<time datetime="2022-06-30T12:06:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/30/7%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E6%8C%87%E9%92%88%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">7、C语言中指针的底层实现</a>
+    <h1 class="article-title" itemprop="name">
+      3、C语言中运算符的底层实现
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        <!--显示阅读次数-->
 
-          
+  <br/>
+  <a class="cloud-tie-join-count" href="javascript:void(0);" style="color:gray;font-size:14px;">
+  <span class="icon-sort"></span>
+  <span id="busuanzi_container_page_pv" style="color:#ef7522;font-size:14px;">
+            阅读数: <span id="busuanzi_value_page_pv"></span>次 &nbsp;&nbsp;
+  </span>
+  </a>
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/30/6%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E6%9E%9A%E4%B8%BE%E3%80%81%E8%81%94%E5%90%88%E3%80%81%E7%BB%93%E6%9E%84%E4%BD%93%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
-  	<time datetime="2022-06-30T12:06:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/30/6%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E6%9E%9A%E4%B8%BE%E3%80%81%E8%81%94%E5%90%88%E3%80%81%E7%BB%93%E6%9E%84%E4%BD%93%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">6、C语言中枚举、联合、结构体的底层实现</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/30/5%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
-  	<time datetime="2022-06-30T12:06:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/30/5%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">5、C语言中函数调用的底层实现</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/30/4%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%92%8C%E8%AF%AD%E5%8F%A5%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
-  	<time datetime="2022-06-30T12:05:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/30/4%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%92%8C%E8%AF%AD%E5%8F%A5%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">4、C语言中表达式和语句的底层实现</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/30/3%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
+<!--显示阅读次数完毕-->
+        
+        <a href="/2022/06/30/3%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
   	<time datetime="2022-06-30T12:05:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/30/3%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">3、C语言中运算符的底层实现</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>C语言运算符可以大体分成7类：算术运算符、关系运算符、位运算符、赋值运算符、逻辑运算符、成员访问运算符、其他运算符。</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112111344426.jpg" alt="IMG_20211211_134352"></p>
+<p>其中，算术运算符、关系运算符、位运算符、赋值运算符都是基础的操作，它们都有具体硬件平台对应的机器指令。</p>
+<h2 id="一、算术运算符"><a href="#一、算术运算符" class="headerlink" title="一、算术运算符"></a>一、算术运算符</h2><ol>
+<li>加、自增 add</li>
+<li>减、自减 sub</li>
+<li>乘 mul</li>
+<li>除、取余 div（除的同时，余数也会被保存在寄存器中）</li>
+</ol>
+<h2 id="二、关系运算符"><a href="#二、关系运算符" class="headerlink" title="二、关系运算符"></a>二、关系运算符</h2><p>关系运算符通过<code>cmp</code>指令来比较两个数的大小关系，并根据比较来更改<code>FLAGS</code>寄存器中的状态位的值，接着通过<code>set</code>指令，如<code>setg</code>、<code>setne</code>等来写入比较的结果。</p>
+<p>FLAGS寄存器中，常用到的状态位如下：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112111354578.jpg" alt="IMG_20211211_135408"></p>
+<h2 id="三、位运算符"><a href="#三、位运算符" class="headerlink" title="三、位运算符"></a>三、位运算符</h2><ol>
+<li>按位与 and</li>
+<li>按位或 or</li>
+<li>按位非 not</li>
+<li>左移 shl</li>
+<li>右移 shr</li>
+</ol>
+<h2 id="四、赋值运算符"><a href="#四、赋值运算符" class="headerlink" title="四、赋值运算符"></a>四、赋值运算符</h2><p>赋值运算符常使用<code>mov</code>指令来实现值的传递和赋予。</p>
+<h2 id="五、逻辑运算符"><a href="#五、逻辑运算符" class="headerlink" title="五、逻辑运算符"></a>五、逻辑运算符</h2><p>我们以与为例子来看：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112111741518.png" alt="image-20211211174149351"></p>
+<p>上面的汇编语言还是进行了一些优化，我们来看未优化的版本：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112111746150.png" alt="1639202572610"></p>
+<p>在未优化的版本中，我们看到很清楚，通过cmp指令来比较第一个逻辑变量的真假，如果为假，则跳过第二个逻辑变量真假的判断，直接将<code>logical</code>变量所在的栈的地址处的值赋为假，这也符合C语言中的<code>短路效应</code>。若第一个逻辑变量为真，则判断第二个逻辑变量的真假。</p>
+<p>与优化版本做对比后，我们可以发现，优化后的版本，加少了对栈内存空间的访问和分支跳转的情况（加少量CPU分支预测错误造成的CPU时间的浪费），这可以提升程序的性能。</p>
+<h2 id="六、成员访问运算符"><a href="#六、成员访问运算符" class="headerlink" title="六、成员访问运算符"></a>六、成员访问运算符</h2><p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112111756589.png" alt="image-20211211175605504"></p>
+<p>成员访问运算符我们以取地址运算符&amp;和解引用运算符*为例：</p>
+<p>对于取地址运算符，对应于<code>lea</code>，即<code>load effective address</code>，将a变量的地址取出来存入b变量在栈内存中的地址处。</p>
+<p>对于解引用运算符，我们将b变量在栈内存中的内容取出来放入寄存器rax中，然后根据rax中的地址值，从这个地址值对应的内存中取出值存入变量c在栈内存中的地址中去。</p>
+<h2 id="七、其他运算符"><a href="#七、其他运算符" class="headerlink" title="七、其他运算符"></a>七、其他运算符</h2><ol>
+<li>sizeof()</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112111807114.png" alt="image-20211211180747042"></p>
+<p>sizeof()运算符在编译时就被求出来，直接以立即数的形式包含在汇编代码中。</p>
+<ol start="2">
+<li>强制类型转换运算符type()</li>
+</ol>
+<p>我们上一章提到了C语言中的隐式类型转换来说明对于同一块数据的不同指令解释可以带来不同的结果，其实强制类型转换和隐式类型转换的本质是一样的，它们都是对于同一块二进制数据的不同解释方式。详见如下：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112111819030.png"></p>
+<p>我们将变量b的内容传到寄存器rax中，它是64位的，但是在强制类型转换时，我们只取了rax寄存器的低16位，即ax的值赋予变量c。也就是说，强制类型转换其实和隐式类型转换在本质上是一样的，都是同一块数据，在不同指令下的不同解释。</p>
+<ul>
+<li>注意: 隐式类型转换发生在低精度像高精度转换的时候，而强制类型转换是由高转低。</li>
+</ul>
 
-        <div class="article-info info-on-right">
-          
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -355,95 +267,128 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/06/30/3%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/30/2%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%A4%BA%E4%B8%8E%E5%AD%98%E5%82%A8/" class="archive-article-date">
-  	<time datetime="2022-06-30T12:04:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2022/06/30/4%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%92%8C%E8%AF%AD%E5%8F%A5%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          4、C语言中表达式和语句的底层实现
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/06/30/2%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%A4%BA%E4%B8%8E%E5%AD%98%E5%82%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">2、C语言中的数据表示与存储</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/30/2%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%A4%BA%E4%B8%8E%E5%AD%98%E5%82%A8/">2、C语言中的数据表示与存储</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E7%AE%97%E6%9C%AF%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">1.</span> <span class="toc-text">一、算术运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%85%B3%E7%B3%BB%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">2.</span> <span class="toc-text">二、关系运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E4%BD%8D%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">3.</span> <span class="toc-text">三、位运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">4.</span> <span class="toc-text">四、赋值运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">5.</span> <span class="toc-text">五、逻辑运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%88%90%E5%91%98%E8%AE%BF%E9%97%AE%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">6.</span> <span class="toc-text">六、成员访问运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E5%85%B6%E4%BB%96%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">7.</span> <span class="toc-text">七、其他运算符</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+        
+    </div>
+</aside>
+
+
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/30/1%E3%80%81C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%AE%8C%E6%95%B4%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%8F%8AC%E8%AF%AD%E8%A8%80%E7%9A%84%E8%AF%AD%E6%B3%95%E8%A6%81%E7%82%B9/" class="archive-article-date">
-  	<time datetime="2022-06-30T10:40:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
-</a>
-        </div>
-    	 
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/30/1%E3%80%81C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%AE%8C%E6%95%B4%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%8F%8AC%E8%AF%AD%E8%A8%80%E7%9A%84%E8%AF%AD%E6%B3%95%E8%A6%81%E7%82%B9/">C语言的完整生命周期及C语言的语法要点</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+
+  
 
 
           </div>
@@ -469,9 +414,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,

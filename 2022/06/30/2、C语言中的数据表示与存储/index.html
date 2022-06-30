@@ -6,23 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>C语言的完整生命周期及C语言的语法要点 | 张润民博客</title>
+  <title>2、C语言中的数据表示与存储 | 张润民博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一、C语言的完整生命周期  预处理阶段  在预处理阶段，编译器会移除源程序中所有的注释信息，并处理宏指令：宏展开、宏替换以及条件编译。  编译优化  在编译优化阶段，编译器会分析并优化源代码，然后将源代码编译成具体硬件平台的汇编代码。">
+  <meta name="description" content="C语言中的数据，有常量和变量，我们最熟悉的是整数int。C语言中提供了unsigned int和signed int两种类型，也即无符号整数和有符号整数，这为我们提升对程序的控制能力提供了帮助，例如在内存地址的寻找上，我们知道它肯定是非负的，因此，可以将一个变量声明为unsigned int类型，这样这个变量就可以存储范围更大的数据了。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C语言的完整生命周期及C语言的语法要点">
-<meta property="og:url" content="http://example.com/2022/06/30/C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%AE%8C%E6%95%B4%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%8F%8AC%E8%AF%AD%E8%A8%80%E7%9A%84%E8%AF%AD%E6%B3%95%E8%A6%81%E7%82%B9/index.html">
+<meta property="og:title" content="2、C语言中的数据表示与存储">
+<meta property="og:url" content="http://example.com/2022/06/30/2%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%A4%BA%E4%B8%8E%E5%AD%98%E5%82%A8/index.html">
 <meta property="og:site_name" content="张润民博客">
-<meta property="og:description" content="一、C语言的完整生命周期  预处理阶段  在预处理阶段，编译器会移除源程序中所有的注释信息，并处理宏指令：宏展开、宏替换以及条件编译。  编译优化  在编译优化阶段，编译器会分析并优化源代码，然后将源代码编译成具体硬件平台的汇编代码。">
+<meta property="og:description" content="C语言中的数据，有常量和变量，我们最熟悉的是整数int。C语言中提供了unsigned int和signed int两种类型，也即无符号整数和有符号整数，这为我们提升对程序的控制能力提供了帮助，例如在内存地址的寻找上，我们知道它肯定是非负的，因此，可以将一个变量声明为unsigned int类型，这样这个变量就可以存储范围更大的数据了。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112091419713.jpg">
-<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112091420703.jpg">
-<meta property="article:published_time" content="2022-06-30T10:40:20.000Z">
-<meta property="article:modified_time" content="2022-06-30T10:43:41.006Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112091603449.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112091604898.jpg">
+<meta property="article:published_time" content="2022-06-30T12:04:59.000Z">
+<meta property="article:modified_time" content="2022-06-30T12:08:42.991Z">
 <meta property="article:author" content="张润民">
 <meta property="article:tag" content="C">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112091419713.jpg">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112091603449.jpg">
   
     <link rel="alternative" href="/atom.xml" title="张润民博客" type="application/atom+xml">
   
@@ -168,14 +168,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-C语言的完整生命周期及C语言的语法要点" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-2、C语言中的数据表示与存储" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      C语言的完整生命周期及C语言的语法要点
+      2、C语言中的数据表示与存储
     </h1>
   
 
@@ -191,34 +191,58 @@
 
 <!--显示阅读次数完毕-->
         
-        <a href="/2022/06/30/C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%AE%8C%E6%95%B4%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%8F%8AC%E8%AF%AD%E8%A8%80%E7%9A%84%E8%AF%AD%E6%B3%95%E8%A6%81%E7%82%B9/" class="archive-article-date">
-  	<time datetime="2022-06-30T10:40:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
+        <a href="/2022/06/30/2%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%A4%BA%E4%B8%8E%E5%AD%98%E5%82%A8/" class="archive-article-date">
+  	<time datetime="2022-06-30T12:04:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="一、C语言的完整生命周期"><a href="#一、C语言的完整生命周期" class="headerlink" title="一、C语言的完整生命周期"></a>一、C语言的完整生命周期</h2><p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112091419713.jpg"></p>
-<ol>
-<li>预处理阶段</li>
-</ol>
-<p>在预处理阶段，编译器会移除源程序中所有的注释信息，并处理宏指令：宏展开、宏替换以及条件编译。</p>
-<ol start="2">
-<li>编译优化</li>
-</ol>
-<p>在编译优化阶段，编译器会分析并优化源代码，然后将源代码编译成具体硬件平台的汇编代码。</p>
+        <p>C语言中的数据，有常量和变量，我们最熟悉的是整数int。C语言中提供了unsigned int和signed int两种类型，也即无符号整数和有符号整数，这为我们提升对程序的控制能力提供了帮助，例如在内存地址的寻找上，我们知道它肯定是非负的，因此，可以将一个变量声明为unsigned int类型，这样这个变量就可以存储范围更大的数据了。</p>
 <span id="more"></span>
 
-<ol start="3">
-<li>汇编</li>
+<h2 id="一、整数的存储形式"><a href="#一、整数的存储形式" class="headerlink" title="一、整数的存储形式"></a>一、整数的存储形式</h2><ul>
+<li>有符号与无符号的区别</li>
+</ul>
+<p>在计算机中，整数常用2的补码表示（2’s complement）。假设内存单元是n bit。对于有符号数，最高位是符号位：最高位为1代表负数，最高位为0代表整数。那么有符号整数能够存储的最大整数为：最高位是0，数值位为1，即$2^{n}-1$，而最小的数为符号位为1，数值为都为0，即$-2^n$，从这我们可以看出来，2’s complement表示有符号整数时，能够表示的负数比正数多一个。</p>
+<p>在计算机硬件的存储中，不论是否有符号，都是用2进制来存储，有无符号仅仅与操作该数据的指令有关。例如：</p>
+<p>在C语言中，有个隐式类型转换</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">-10</span>;</span><br><span class="line"><span class="type">unsigned</span> <span class="type">int</span> b = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">if</span>(a &lt; b)&#123;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;a &lt; b&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;a &gt; b&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后却发现输出的是<code>a &gt; b</code>，这是因为a这个有符号数在和b这个无符号数进行比较的时候，被隐式类型转换成了无符号数246，然后再与b作比较，因此自然是输出<code>a &gt; b</code>。由此可见，计算机并不知道你存储的是有符号数还是无符号数，这仅仅与你操纵这个数据的指令如何解释它有关。</p>
+<ul>
+<li>2’s complement的来源</li>
+</ul>
+<p>我们用n（n&gt;0）的补码和-n的补码相加，发现最终的结果为$2^w$（w是表示这个数所用的内存单元的bit数），因此，当我们求-n的补码表示时，我们可以用$2^w-n$来得到一个十进制数，这个十进制的无符号数表示就是-n的2的补码的表示。</p>
+<h2 id="二、小数的存储形式"><a href="#二、小数的存储形式" class="headerlink" title="二、小数的存储形式"></a>二、小数的存储形式</h2><p>在计算机中，小数的存储遵循IEEE 754标准。我们以32位单精度浮点数为例：符号位1位，exponent位8位，fraction小数位23位。其中，exponent位的数值采用移码bias code表示，其真实数值为：exponent位的unsigned int表示—$2^{exponent位数-1}-1$，在单精度浮点数中，exponet位为8位，因此上式为：$$Unsigned Int - (2^{8-1}-1)$$，即$Unsigned Int - 127$。</p>
+<p>IEEE 754标准还有如下对于浮点数表示的规定以及各段位的划分：</p>
+<ol>
+<li>Single Precision Floating Point单精度浮点数 32 &#x3D; 1 + 8 + 23</li>
+<li>Double Precision Floating Point 双精度浮点数 64 &#x3D; 1 + 11 + 52</li>
+<li>Half Precision Floating Point半精度浮点数 16 &#x3D; 1 + 5 + 10</li>
+<li>Quard Precision Floating Point四精度浮点数 128 &#x3D; 1 + 15 + 112</li>
 </ol>
-<p>在汇编阶段，汇编器会将汇编代码汇编成具有一定格式的、可以被操作系统使用的对象文件。</p>
-<ol start="4">
-<li>链接</li>
-</ol>
-<p>在链接阶段，链接器会整合该程序所需要的所有对象文件、设置好程序中函数调用的正确地址，并生成具体操作系统的二进制可执行文件。</p>
-<h2 id="二、C语言的一些语法要点"><a href="#二、C语言的一些语法要点" class="headerlink" title="二、C语言的一些语法要点"></a>二、C语言的一些语法要点</h2><p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112091420703.jpg"></p>
+<h2 id="三、常量存储在哪里"><a href="#三、常量存储在哪里" class="headerlink" title="三、常量存储在哪里"></a>三、常量存储在哪里</h2><p>在C程序中，我们经常使用一些常量：如</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">2</span>;</span><br><span class="line"><span class="type">char</span> ch = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="type">char</span> arr[<span class="number">12</span>] = <span class="string">&quot;I Love China!&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面的常量是<code>字面值常量</code>。下面还有一种<code>只读常量</code>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> a = <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+
+<p>使用const修饰的变量初始化，在程序后面是不能修改它的值的，因此，我们称其为<code>只读常量</code>。</p>
+<p>那么常量存储在哪里呢？</p>
+<p>如果是较长的常量，会存储在操作系统为该程序分配的进程的VAS(virtual address space虚拟内存空间)的<code>.rodata</code>段内，如果是较短的常量，则会直接内联在程序中，存储在进程的VAS的<code>.text</code>段中，最后成为机器码的一部分，例如<code>mov</code>指令后面的立即数。</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112091603449.jpg" alt="IMG_20211209_160220"></p>
+<h2 id="四、变量存储在哪里"><a href="#四、变量存储在哪里" class="headerlink" title="四、变量存储在哪里"></a>四、变量存储在哪里</h2><p>变量的存储不想常量那样简单，变量的存储如其名，有很多的变数。变量可以存储在register中、栈中、堆中。</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202112091604898.jpg" alt="IMG_20211209_160248"></p>
+<h2 id="五、有趣且有用的size-t"><a href="#五、有趣且有用的size-t" class="headerlink" title="五、有趣且有用的size_t"></a>五、有趣且有用的size_t</h2><p>size_t是无符号整数，不像Java、Python等语言中对size_t有明确大小的规定，C语言中并没有明确地定义它的大小。在C语言中，它的大小与具体的硬件平台有关，如：</p>
+<p>在32位的硬件平台上：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="type">unsigned</span> <span class="type">long</span> <span class="type">size_t</span>;</span><br></pre></td></tr></table></figure>
+
+<p>在64位的硬件平台上：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="type">unsigned</span> <span class="type">long</span> <span class="type">long</span> <span class="type">size_t</span>;</span><br></pre></td></tr></table></figure>
+
+<p>但不管是在哪种硬件平台上，size_t都是那个具体硬件平台所能够处理的最大bit位数的大小。size_t常用于循环中的变量类型的定义、数组大小的表示、malloc()分配的内存大小的表示、函数的返回值类型等。</p>
 
       
 
@@ -288,7 +312,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/06/30/C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%AE%8C%E6%95%B4%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%8F%8AC%E8%AF%AD%E8%A8%80%E7%9A%84%E8%AF%AD%E6%B3%95%E8%A6%81%E7%82%B9/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/06/30/2%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%A4%BA%E4%B8%8E%E5%AD%98%E5%82%A8/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -302,9 +326,18 @@
   
 <nav id="article-nav">
   
+    <a href="/2022/06/30/3%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          3、C语言中运算符的底层实现
+        
+      </div>
+    </a>
   
-    <a href="/2022/06/30/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Hello World</div>
+  
+    <a href="/2022/06/30/1%E3%80%81C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%AE%8C%E6%95%B4%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%8F%8AC%E8%AF%AD%E8%A8%80%E7%9A%84%E8%AF%AD%E6%B3%95%E8%A6%81%E7%82%B9/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">C语言的完整生命周期及C语言的语法要点</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -323,6 +356,19 @@
             </div>
         </div>
         
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%95%B4%E6%95%B0%E7%9A%84%E5%AD%98%E5%82%A8%E5%BD%A2%E5%BC%8F"><span class="toc-number">1.</span> <span class="toc-text">一、整数的存储形式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%B0%8F%E6%95%B0%E7%9A%84%E5%AD%98%E5%82%A8%E5%BD%A2%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">二、小数的存储形式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%B8%B8%E9%87%8F%E5%AD%98%E5%82%A8%E5%9C%A8%E5%93%AA%E9%87%8C"><span class="toc-number">3.</span> <span class="toc-text">三、常量存储在哪里</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%8F%98%E9%87%8F%E5%AD%98%E5%82%A8%E5%9C%A8%E5%93%AA%E9%87%8C"><span class="toc-number">4.</span> <span class="toc-text">四、变量存储在哪里</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%9C%89%E8%B6%A3%E4%B8%94%E6%9C%89%E7%94%A8%E7%9A%84size-t"><span class="toc-number">5.</span> <span class="toc-text">五、有趣且有用的size_t</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
         
     </div>
 </aside>

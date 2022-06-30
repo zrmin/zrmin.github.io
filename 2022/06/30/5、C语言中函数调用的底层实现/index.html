@@ -6,17 +6,34 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Tag: C | 张润民博客</title>
+  <title>5、C语言中函数调用的底层实现 | 张润民博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="记录自己学习的内容">
-<meta property="og:type" content="website">
-<meta property="og:title" content="张润民博客">
-<meta property="og:url" content="http://example.com/tags/C/index.html">
+  <meta name="description" content="前面讲运算符的时候，有一个函数调用运算符我们没有讲，因为我们要在函数中讲。 一、函数概述函数是一种封装代码的方法，可以避免程序中的代码重复，提高代码可重用性和代码的简洁性、易读性。 函数中参数的传递有两种方式，分别是：值传递和指针传递。对于按值传递的参数，函数外部的参数和函数内部使用的参数，即实参和形参是两个不同的数据对象，即形参和实参保存在不同的内存区域中，因为按值传递时，形参是对实参数据对象的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="5、C语言中函数调用的底层实现">
+<meta property="og:url" content="http://example.com/2022/06/30/5%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/index.html">
 <meta property="og:site_name" content="张润民博客">
-<meta property="og:description" content="记录自己学习的内容">
+<meta property="og:description" content="前面讲运算符的时候，有一个函数调用运算符我们没有讲，因为我们要在函数中讲。 一、函数概述函数是一种封装代码的方法，可以避免程序中的代码重复，提高代码可重用性和代码的简洁性、易读性。 函数中参数的传递有两种方式，分别是：值传递和指针传递。对于按值传递的参数，函数外部的参数和函数内部使用的参数，即实参和形参是两个不同的数据对象，即形参和实参保存在不同的内存区域中，因为按值传递时，形参是对实参数据对象的">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201031545164.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201032036472.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201032140462.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201032314258.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201032337784.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201050802697.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201050804584.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201050806212.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201050835585.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201050828989.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201050950056.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201050957524.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201050959340.png">
+<meta property="article:published_time" content="2022-06-30T12:06:07.000Z">
+<meta property="article:modified_time" content="2022-06-30T12:13:45.736Z">
 <meta property="article:author" content="张润民">
+<meta property="article:tag" content="C">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201031545164.png">
   
     <link rel="alternative" href="/atom.xml" title="张润民博客" type="application/atom+xml">
   
@@ -162,112 +179,236 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-5、C语言中函数调用的底层实现" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2022" class="archive-year">2022</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/30/7%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E6%8C%87%E9%92%88%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
-  	<time datetime="2022-06-30T12:06:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/30/7%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E6%8C%87%E9%92%88%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">7、C语言中指针的底层实现</a>
+    <h1 class="article-title" itemprop="name">
+      5、C语言中函数调用的底层实现
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        <!--显示阅读次数-->
 
-          
+  <br/>
+  <a class="cloud-tie-join-count" href="javascript:void(0);" style="color:gray;font-size:14px;">
+  <span class="icon-sort"></span>
+  <span id="busuanzi_container_page_pv" style="color:#ef7522;font-size:14px;">
+            阅读数: <span id="busuanzi_value_page_pv"></span>次 &nbsp;&nbsp;
+  </span>
+  </a>
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/30/6%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E6%9E%9A%E4%B8%BE%E3%80%81%E8%81%94%E5%90%88%E3%80%81%E7%BB%93%E6%9E%84%E4%BD%93%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
-  	<time datetime="2022-06-30T12:06:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/30/6%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E6%9E%9A%E4%B8%BE%E3%80%81%E8%81%94%E5%90%88%E3%80%81%E7%BB%93%E6%9E%84%E4%BD%93%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">6、C语言中枚举、联合、结构体的底层实现</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/30/5%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
+<!--显示阅读次数完毕-->
+        
+        <a href="/2022/06/30/5%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
   	<time datetime="2022-06-30T12:06:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/30/5%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">5、C语言中函数调用的底层实现</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>前面讲运算符的时候，有一个函数调用运算符我们没有讲，因为我们要在函数中讲。</p>
+<h2 id="一、函数概述"><a href="#一、函数概述" class="headerlink" title="一、函数概述"></a>一、函数概述</h2><p>函数是一种封装代码的方法，可以避免程序中的代码重复，提高代码可重用性和代码的简洁性、易读性。</p>
+<p>函数中参数的传递有两种方式，分别是：值传递和指针传递。对于按值传递的参数，函数外部的参数和函数内部使用的参数，即实参和形参是两个不同的数据对象，即形参和实参保存在不同的内存区域中，因为按值传递时，形参是对实参数据对象的一个复制，函数内部对形参的改变并不会对实参产生影响。对于按指针传递的参数，函数内部使用的数据对象和函数外部的实参的数据对象是同一个数据对象，因此函数内部对于数据对象做出的修改会反映在一个（块）内存中，这块内存也是实参的内存空间，因此，实参也会受到影响。</p>
+<p>上面的说教不免过于学究，看个例子：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201031545164.png" alt="image-20220103154515858"></p>
+<p>在foo()函数中有4个参数，前两个参数是值传递，函数内和函数外使用的是两个不同内存区域中的数据对象（即使它们的值相同），后两个参数是指针传递，第一个是a pointer to a struct，第二个是a pointer to a function，对于函数指针，可以省略<code>*</code>符号，也就是说foo()函数可以写成：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">foo</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y, Point* p, <span class="type">int</span>(*handler)(<span class="type">int</span>))</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> (*handler)(x + y + p-&gt;x + p-&gt;y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-        <div class="article-info info-on-right">
-          
+<p>函数指针的解释：<code>handler</code>的意识是a pointer to a function，<code>*handler</code>的意思是<code>a function</code>，这里的<code>*</code>是解引用运算符，<code>(*handler)(x + y + p-&gt;x + p-&gt;y)</code>的意思是a call to that function。</p>
+<h2 id="二、System-V-AMD64-ABI调用约定"><a href="#二、System-V-AMD64-ABI调用约定" class="headerlink" title="二、System V AMD64 ABI调用约定"></a>二、System V AMD64 ABI调用约定</h2><p>不同平台的编译器在处理函数调用时，遵循的函数调用约定不同，例如在Windows平台上，函数被调用时编译器按照Microsoft x64或者Vector调用约定来对栈内存和寄存器等进行管理，在Unix和类Unix平台上，例如我们经常使用的gcc编译器，就是按照System V AMD64 ABI调用约定来对函数调用时涉及到的栈内存和寄存器等进行分配的。</p>
+<p>由于我经常在Linux平台上做开发，所以我主要讲一下SystemV的调用约定。</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201032036472.jpg" alt="pictures"></p>
+<ol>
+<li><b>参数传递</b></li>
+</ol>
+<p>函数调用时，对于整型和指针型的实参，在调用时，按函数定义中的参数顺序从左到右依次使用<code>rdi</code>、<code>rsi</code>、<code>rdx</code>、<code>rcx</code>、<code>r8</code>、<code>r9</code>这6个寄存器来保存实参，<font color=red>从上图中的第36~41行可以看出来</font>，即分别是把：</p>
+<ul>
+<li>第一个参数1保存在rdi寄存器中</li>
+<li>第二个参数2保存在rsi寄存器中</li>
+<li>第三个参数3保存在rdx寄存中</li>
+<li>第四个参数4保存在rcx寄存器中</li>
+<li>第五个参数5保存在r8寄存器中</li>
+<li>第六个参数6保存在r9寄存器中</li>
+</ul>
+<p>那如果函数接收的参数超过6个了，那么规定的这6个寄存器用完了怎么办呢？答：多出来的参数按照从右往左的顺序压入栈中，通过栈内存来保存。<font color=red>从上图中的第42~43行可以看出来</font>，即分别是把：</p>
+<ul>
+<li>按照从右往左的顺序，我们应该先把8压入栈中，再把7压入栈中，事实上我们也是这么做的，如下：</li>
+<li>第42行，将7压入栈顶指针所指的栈内存中，即<code>[rsp]</code>处</li>
+<li>第43行，将8压入<code>[rsp + 8]</code>处</li>
+<li>我们知道，在计算机中，栈是从高地址往低地址增长的，因此，第42行和第43行的操作等价于先将8压入栈内存，再将7压入栈内存</li>
+</ul>
+<p><font color=green>也许有人会有问题，问什么x和y的值不直接存储在寄存器rdi和rsi中，而是要先存储在栈内存中，然后再间接地赋给寄存器呢？这是因为x和y是函数内部的局部变量，所以它们最开始会被存储到栈内存中。</font></p>
+<p>整型和指针型的参数传递我们已经搞明白了，那么浮点型呢？毕竟，浮点数是我们写程序时常用的。</p>
+<p>对于浮点参数，在SystemV调用约定中，编译器将使用xmm0到xmm7这8个寄存器来进行存储，对于更宽的值，也可能会使用ymm和zmm寄存器来代替xmm寄存器。至于xmm、ymm、zmm都是x86 ISA中名为AVX(Advanced Vector Extensions)的扩展指令集使用的。这些指令集专门用于浮点数计算以及SMID相关的处理。</p>
+<p>举个例子如下：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201032140462.jpg"></p>
+<p>上图的处理流程其实和整型参数传递是大同小异的：</p>
+<ul>
+<li>第47~50行，先将double 1赋给xmm0，将xmm0中的值，即double 1存储在栈内存中，因为double 1是函数中的局部变量。double 2也是这样处理</li>
+<li>第51~55行，就是浮点参数传递的处理流程。按照函数定义时的从左到右的顺序分别将double 1赋给xmm0，double 2赋给xmm1，double 3赋给xmm2，double 4赋给xmm3，double 5赋给xmm4，至此，浮点传参时参数的保存就完成了</li>
+<li>第56~58行，就是我们上面讲过的整型参数传递的处理：分别按从左到右的顺序将参数依次保存在寄存器rdi、rsi和rdx中。</li>
+</ul>
+<ol start="2">
+<li><b>返回值传递</b></li>
+</ol>
+<p>当调用的函数有返回值时，SystemV调用约定规定：</p>
+<ul>
+<li>当返回值为整型且不超过64位时，通过rax寄存器来进行返回值的传递。<font color = red>如上图中第28行和第64行</font></li>
+<li>当返回值为整型且超过64位但不超过128位时，编译器通过使用寄存器rax和rdx来分别保存返回值的低64位和高64位</li>
+<li>当返回值为浮点型时，编译器会使用xmm0和xmm1来进行存储。而当返回值过大时，会使用ymm和zmm。<font color=red>如上图中第6行</font></li>
+</ul>
+<ol start="3">
+<li><b>寄存器的caller-saved 和 callee-saved</b></li>
+</ol>
+<p>SystemV调用约定中规定，如果一个被调函数需要使用到<code>rbx</code>、<code>rbp</code>、<code>rsp</code>的话，那么在该被调函数真正地处理数据（如参数传递处理）之前（被调用前，可以结合下面的Red Zone来理解，在做calle-saved时，该函数并没有被调用），要在该被调函数中将rbx、rbp和rsp进行保存，并在函数返回之前，将它们恢复。这就是<code>callee-saved</code>，<font color=red>如上图中第4-5行、第10-11行、第43-44行</font>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">push rbp ;保存当前的rbp中的值到栈内存中，以便在函数执行完毕后恢复rbp的值</span><br><span class="line">mov rbp, rsp ;将当前rsp的值保存在rbp中，因为在处理被调用的函数时，需要分配栈空间</span><br><span class="line">;因此，需要扩展（分配）一定的栈空间来保存函数中用到的数据，所以rsp在后面会被减去一个值来实现栈空间的分配</span><br></pre></td></tr></table></figure>
+
+<p>还如上图中第7行、第29-30行、第65-66行，以第65-66行为例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">add rsp, 32 ;恢复rsp的值到该函数被调用前的值</span><br><span class="line">pop rbp ;恢复rbp的值为函数调用前的rbp的值，因为函数调用前的rbp的值已经通过push rbp保存在栈内存中了</span><br></pre></td></tr></table></figure>
+
+<p>而对于rbx、rbp、rsp之外的其他寄存器，则由调用函数根据需要自行保存和恢复必要的寄存器的值。这就是<code>caller-saved</code>。</p>
+<ol start="4">
+<li><b>其他约定</b></li>
+</ol>
+<p>SystemV还有一些重要的其他约定：</p>
+<ul>
+<li>栈顶地址（以字节为单位）要16字节对齐，也就是说栈顶的地址值要是16的倍数</li>
+<li>不同于用户函数的调用过程，<font color=red>系统调用函数</font>（System Call）需要使用寄存器rdi、rsi、rdx、r10、r8、r9来传递参数</li>
+<li>在栈顶往低地址方向留出128字节的空间，作为<code>Red Zone</code></li>
+</ul>
+<p>Red Zone是在栈顶增长方向专门为叶子函数留出的128字节空间，<font color = blue>注意：栈顶往上的地方有Red Zone，并不是栈顶往下包含了Red Zone。</font>所谓<code>叶子函数</code>就是说该函数不再调用其他的函数，如本节例子中，main()函数调用foo()函数，foo()函数又调用bar()函数，但是bar()函数并没有调用其他函数，因此，bar()函数就是我们所说的<code>叶子函数</code>。Red Zone空间的留出是为了减少叶子函数中的修改rsp，即扩充栈内存空间的时间，提升函数的执行速度。</p>
+<p>举个例子如下：我们在Red Zone的128字节中存储了33个整数，即132个字节，因此需要修改rsp，即栈顶的位置。</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201032314258.jpg"></p>
+<p>又一例：在本例中，我们在Red Zone的128字节中，存储了32个整数，刚好使用了128字节的空间，因此，Red Zone刚好可以满足我们的需求，所以我们不需要调整rsp的大小，即栈顶的位置不需要进行调整，也即栈内存空间大小的调整时间被节省下来了。</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201032337784.jpg"></p>
+<p>bar()函数是我们的叶子函数，当我们在处理foo()函数的时候，就在foo()函数的栈顶往低地址方向留出了128字节的空间给bar()函数使用，我们可以发现，如果我们在bar()函数中，存储了32个整数（每个整数4个字节）的话，是不需要修改rsp的值的，也就是说，我们为叶子函数留出的Red Zone的空间大小是足够bar()函数使用的，那么就可以节省下来bar()函数栈调整栈内存空间大小的操作的时间，进而提升函数的执行速度。但是如果我们要存储33个整数的话，Red Zone的128字节的空间就不够用了，我们需要额外再分配4个字节的空间来存储第1个整数，这时，在rsp，即栈顶上方为叶子函数又自动分配了128字节的Red Zone，那么现在这128字节的空间就足以存储下第2~第33共计32整数了。</p>
+<hr/>
+
+<h3 id="System-V-AMD64-ABI调用约定总结"><a href="#System-V-AMD64-ABI调用约定总结" class="headerlink" title="System V AMD64 ABI调用约定总结"></a>System V AMD64 ABI调用约定总结</h3><p>函数调用时传递参数的方法根据不同的操作系统会有所不同，例如linux规定在64位x86寄存器上，前6个整型参数要通过rdi、rsi、rdx、rcx、r8、r9来传递。一个操作系统关于入参方式的规定就是应用程序二进制接口（Application Binary Interface, ABI）。</p>
+<hr/>
+
+
+
+<ol start="5">
+<li><b>栈帧</b></li>
+</ol>
+<p>当一个函数被调用时，操作系统会为其建立一个进程，该进程拥有一块内存空间VAS，即Virtual Address Space——虚拟地址空间。当一个函数被调用时，会在栈内存中保存该函数需要用到的数据，这些数据有返回值、实参、局部变量等，但如果把这些数据看成一个整体，这个整体就代表了一个被调函数的信息，我们这样一个数据块叫做栈帧Stack Frame。</p>
+<p>在进程的VAS中，栈是从高地址生长到低地址，当我们需要的栈空间大小不足或者栈空间富余时，我们通过调整rsp的值，即栈顶指针的值来调整栈空间的大小。rbp保存的是一个栈帧的底，也就是一个栈帧开始的地址，rsp保存的是一个栈帧结束的地址。</p>
+<p>当发生函数调用时，有一下几件基本的事情要做：</p>
+<ul>
+<li>将<code>call</code>指令的下一条指令的地址压入栈中，也就是返回地址被压入栈中，以便通过ret指令将程序执行流程返回，此时rsp更新</li>
+<li>发生<code>callee-saved</code>，将rsp的旧值，也就是上一个栈帧的起始位置压入栈中，方便在被调函数返回时，找到上一个栈帧的起始位置，也就是调用函数的有用的数据块。此时，rsp的值再次更新。<code>push rbp</code></li>
+<li>仍然进行<code>callee-saved</code>，将rsp的值保存在rbp中，方便使用rbp来处理被调函数的数据（比如实参、局部变量的存储，数据的定位等）。<code>mov rbp, rsp</code></li>
+<li>减小rsp的值（叶子函数如果所需要存储在栈内存中的数据大小未超过128字节的Red Zone，便不需要这一步），来扩大栈内存，用来为下面进行的被调函数的数据保存开辟空间。<code>sub rsp ...</code></li>
+<li>被调函数的实参、局部变量、寄存器等的数据处理</li>
+<li>（如果有第三步，本步执行）增加rsp的值来实现销毁栈区的目的，因为这个被调函数的任务已经完成，为了减少不必要的内存浪费，我需要释放掉这块被占用的内存，是上面第三步减少rsp值的逆操作。<code>add rsp ...</code></li>
+<li>恢复rbp的值，来标识上一个函数的栈帧，也就是用来标识上一个函数的数据块。此时，rsp的值更新。<code>pop rbp</code></li>
+<li>返回到<code>call</code>指令的下一条指令地址处去执行那条指令。此时上面第一步中的返回地址被从栈中弹出，rsp的值再次更新，此时，rsp所指向的地方正式发生调用前的栈帧的顶点处。<code>ret</code></li>
+</ul>
+<p>注意：x86中，恢复rsp和rbp的工作，也就是上面倒数第二步和倒数第3步，可以由一条<code>leave</code>指令来完成。<code>leave</code>指令相当于：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov rsp, rbp ;是建立栈帧时mov rbp, rsp的逆操作</span><br><span class="line">pop rbp ;恢复rbp的值，此时之前push rbp时保存在栈中的值又被弹出到rbp中</span><br></pre></td></tr></table></figure>
+
+<p>每一次发生函数调用时，都会像上面那样操作，但是进程的VAS的大小毕竟是有限的，也即是说栈空间的大小是有限的，如果函数a调用函数b，函数b又调用函数c，函数c又调用函数d……如此反复，那么当函数的调用重数太大时，我们的栈空间一定是会被填满的，那时，如果还有新的函数n被调用，VAS将没有空间可以用来建立函数n的栈帧，那时，就会发生<code>Stack Overflow</code>的错误。这个错误，有编程经验的人一定是耳熟能详了。</p>
+<h2 id="三、递归函数的尾递归调用优化"><a href="#三、递归函数的尾递归调用优化" class="headerlink" title="三、递归函数的尾递归调用优化"></a>三、递归函数的尾递归调用优化</h2><p>递归函数就是自己调用自己的函数，相信大家都知道。</p>
+<p>通过上面的学习，我们都知道，当调用一个函数时，会产生栈帧，如果一个递归函数，自己调用自己的深度太大，导致进程的VAS无法满足创建一个新的栈帧的空间需求了，便会发生<code>Segmentation Fault</code>错误。而这一切都是因为栈帧太多了，而尾递归调用优化就要用来解决函数栈帧太多，VAS放不下的问题。</p>
+<p>递归大家都明白，那么什么是尾递归呢？所谓尾递归，就是函数结束前的最后一个操作是调用一个函数，除了调用一个函数就结束外，不能有附加的任何额外操作。也即被调用的这个函数处于调用函数的末尾，是调用函数return前进行的最后一个操作。</p>
+<p>尾递归调用举例：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201050802697.png" alt="image-20220105080211538"></p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201050804584.png" alt="image-20220105080451501"></p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201050806212.png" alt="image-20220105080603139"></p>
+<p>尾递归调用优化通常会使用跳转指令，如<code>jne</code>、<code>je</code>、<code>jle</code>等来代替<code>call</code>指令以避免栈帧的过度创建，达到节省栈内存的作用，本质上是使用循环来实现递归调用。</p>
+<p>我们来看看代码，更让人信服：</p>
+<p>下面是尾递归调用不优化的版本，可以看出，尾递归调用不优化的时候，在每次调用fact2()函数时，都使用了<code>call</code>指令（第18行），也即每次都要建立一个栈帧，如果我们传入的参数<code>n</code>过大，那么fact2()函数将会被调用很多次，那么进程的VAS可能会被用光。那么优化后呢？</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201050835585.jpg"></p>
+<p>我们来具体讲解一下不优化的尾递归调用为什么会造成栈内存的耗尽：</p>
+<ul>
+<li><p>我们在主函数中调用fact2()函数，由此建立了第一个栈帧，就是汇编代码第2行、第3行、第4行的<code>push</code>、<code>move</code>、<code>sub</code>指令进行的操作</p>
+</li>
+<li><p>首先我们知道寄存器edi中保存了函数第一参数n的值，寄存器esi中保存了函数第二参数res的值</p>
+</li>
+<li><p>将edi中的值，即n的值保存到栈区[rbp-4]处</p>
+</li>
+<li><p>将esi中的值，即res的值保存到栈区[rbp-8]处</p>
+</li>
+<li><p>然后比较[rbp-4]处的值是否和0相等，即源代码第11行的<code>if(n == 0)</code></p>
+</li>
+<li><p>若n的值与0相等，则不跳转而是继续执行下一条指令，也即汇编代码第9行的指令</p>
+</li>
+<li><p>将[rbp-8]处保存的res的值赋给寄存器eax保存，通过上面的SystemV调用约定中的返回值约定，我们知道eax中保存的是返回值</p>
+</li>
+<li><p>接着无条件跳转到标号<code>.L3</code>处执行栈帧的清理和函数返回操作</p>
+</li>
+<li><p>如果n的值与0不相等，则跳转到标号<code>.L2</code>处继续执行</p>
+</li>
+<li><p>此时，将栈内存[rbp-8]处保存的res的值保存在寄存器eax中</p>
+</li>
+<li><p>将eax与[rbp-4]处的值有符号相乘，也就是源代码第12行中的<code>res * n</code>，并将结果保存在寄存器eax中</p>
+</li>
+<li><p>接着，将栈区[rbp-4]处的值，即n的值保存在寄存器edx中</p>
+</li>
+<li><p>将edx中的值自减1，也就是源代码第12中的<code>n - 1</code></p>
+</li>
+<li><p>将eax的值赋给寄存器esi，也就是res*n的值赋给寄存器esi，我们知道寄存器esi负责函数第二参数的传递</p>
+</li>
+<li><p>将edx的值赋给寄存器edi，我们知道寄存器edi保存的是函数第一参数的值</p>
+</li>
+<li><p>最后，再次调用fact2函数，即汇编代码中第18行的<code>call fact2</code></p>
+</li>
+<li><p>进入fact2函数，我们发现，它有一次建立了栈帧，之后的操作同上</p>
+<p>我们发现，未优化的fact2函数每次<code>call</code>调用时，都要建立一个栈帧，这样在fact2函数第一参数n很大的情况下，将会建立许多栈帧，进程VAS的空间可能会被耗尽。发生<code>Stack Overflow</code>或者<code>Segmentation Fault</code>的错误。</p>
+<p>优化之后的尾递归调用如下：</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201050828989.png" alt="image-20220105082828773"></p>
+<p>可以发现，优化之后的尾递归调用，使用跳转指令来代替函数调用指令，如上图中第8行使用<code>jne</code>来替代了不优化版本的第18行的<code>call</code>指令。也就是说，优化后的尾递归调用采用循环的方法来实现递归。这样，在进程的VAS中，我们只需要建立一个栈帧，然后通过循环修改栈帧中保存的数据值，来实现递归的功能。</p>
+<p>我们来仔细分析一下优化后的实现思路：</p>
+<ul>
+<li><p>我们在主函数中调用fact2()函数，因此建立了一个栈帧（其实，优化太大，直接把结果40320给了寄存器esi，直接不调用了，我们假装主函数调用了一次fact2()函数，那么将建立一个栈帧）</p>
+</li>
+<li><p>根据上面讲的SystemV调用约定中的函数参数传递约定，我们知道寄存器edi中保存着第一个参数n的值，寄存器esi中保存着第二个参数res的值</p>
+</li>
+<li><p>首先将esi的值，即res的值赋给寄存器eax。根据上面讲的SystemV调用约定的返回值传递约定，我们知道返回值大都使用寄存器eax来进行保存</p>
+</li>
+<li><p>然后<code>test</code>指令检查<code>ZF</code>位 是否为1，也即检查edi中的值是否为0，也就是C代码第11行中的<code>if(n == 0)</code></p>
+</li>
+<li><p>若<code>ZF</code>位为1，即若n的值为0，那么就跳转到标号<code>.L5</code>处，执行<code>ret</code>指令，该函数结束，返回值已经包含在了寄存器<code>eax</code>中，也就是C代码第11行中的<code>return res</code></p>
+</li>
+<li><p>若<code>ZF</code>位不为1，即若n的值不为0，那么就继续执行下一条指令，也就是标号<code>.L2</code>中的指令，也就是C代码第12行中的<code>else</code></p>
+</li>
+<li><p>将寄存器eax中的值和寄存器edi中的值有符号相乘，并把乘积保存在寄存器eax中。根据上面的步骤，我们知道，eax中的值是res，edi中的值是n，也就是C代码第12行中的<code>res*n</code></p>
+</li>
+<li><p>将edi中的值自减1，edi中保存的是第一个参数n的值，也就是C代码第12行中的<code>n-1</code></p>
+</li>
+<li><p>最后是<code>jne</code>指令实现条件跳转，检查<code>ZF</code>是否为0，也就是上一步中的edi自减1后是否不是0，若不是0，则跳转到标号<code>.L2</code>处继续执行，这一步就是上面所说的<font color=green>尾递归调用优化，通过循环来实现递归</font></p>
+</li>
+<li><p>如此反复，直到寄存器edi中的值，也即函数第一个参数n的值为0时，不再进行跳转，而是继续指令下一条语句，也就是标号<code>.L5</code>中的指令<code>ret</code>，而返回值，也就是函数的第二参数，已经在反复的循环中被更新，且更新后的值都被保存在寄存器eax中</p>
+</li>
+</ul>
+<p>我们发现，优化后的fact2()函数的栈帧始终只有一个，而未优化的fact2()函数，却随着每一个的调用都建立一个栈帧，如果fact2()函数的第一参数n的值很大，那么建立的栈帧将会很多，进程VAS的空间有可能会被耗尽。</p>
+<h2 id="四、参数求值顺序"><a href="#四、参数求值顺序" class="headerlink" title="四、参数求值顺序"></a>四、参数求值顺序</h2><p>下面给出使用不同编译器编译同一份代码产生不同结果的例子：</p>
+<p>例1：gcc编译器</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201050950056.png" alt="image-20220105095051935"></p>
+<p>可以发现，gcc编译器是从右往左计算参数n的值的。</p>
+<p>例2：clang编译器</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201050957524.png" alt="image-20220105095707413"></p>
+<p>可以发现，clang编译器是按照从左往右的顺序来计算参数n的值的。</p>
+<p>为什么gcc和clang编译器它们的求值顺序不一样呢？其实我们可以从clang编译器给出的Warning来得出答案：</p>
+<p><img src="https://raw.githubusercontent.com/zrmin/C-Programming-Language/master/images/202201050959340.png" alt="image-20220105095920216"></p>
+<p>也就是说，<font color=red>对于参数n，产生了多个无序的修改</font>。就像GCC按照从右往左的顺序修改参数n的值而clang按照从左往右的顺序修改参数n的值一样。</p>
+<p>归根究底，编译器对于参数的无序修改是因为C标准中并未规定函数中参数的求值顺序。</p>
+<p>这告诫我们，<font color=red>在写函数的时候，不要写出需要依赖特定参数求值顺序才能得到正确结果的函数</font>。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -279,171 +420,128 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/06/30/5%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/30/4%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%92%8C%E8%AF%AD%E5%8F%A5%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
-  	<time datetime="2022-06-30T12:05:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2022/06/30/6%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E6%9E%9A%E4%B8%BE%E3%80%81%E8%81%94%E5%90%88%E3%80%81%E7%BB%93%E6%9E%84%E4%BD%93%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          6、C语言中枚举、联合、结构体的底层实现
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/06/30/4%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%92%8C%E8%AF%AD%E5%8F%A5%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">4、C语言中表达式和语句的底层实现</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/30/4%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%92%8C%E8%AF%AD%E5%8F%A5%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">4、C语言中表达式和语句的底层实现</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%87%BD%E6%95%B0%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">一、函数概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81System-V-AMD64-ABI%E8%B0%83%E7%94%A8%E7%BA%A6%E5%AE%9A"><span class="toc-number">2.</span> <span class="toc-text">二、System V AMD64 ABI调用约定</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#System-V-AMD64-ABI%E8%B0%83%E7%94%A8%E7%BA%A6%E5%AE%9A%E6%80%BB%E7%BB%93"><span class="toc-number">2.1.</span> <span class="toc-text">System V AMD64 ABI调用约定总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E9%80%92%E5%BD%92%E5%87%BD%E6%95%B0%E7%9A%84%E5%B0%BE%E9%80%92%E5%BD%92%E8%B0%83%E7%94%A8%E4%BC%98%E5%8C%96"><span class="toc-number">3.</span> <span class="toc-text">三、递归函数的尾递归调用优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%8F%82%E6%95%B0%E6%B1%82%E5%80%BC%E9%A1%BA%E5%BA%8F"><span class="toc-number">4.</span> <span class="toc-text">四、参数求值顺序</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+        
+    </div>
+</aside>
+
+
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/30/3%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
-  	<time datetime="2022-06-30T12:05:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
-</a>
-        </div>
-    	 
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/30/3%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">3、C语言中运算符的底层实现</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/30/2%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%A4%BA%E4%B8%8E%E5%AD%98%E5%82%A8/" class="archive-article-date">
-  	<time datetime="2022-06-30T12:04:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/30/2%E3%80%81C%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%A4%BA%E4%B8%8E%E5%AD%98%E5%82%A8/">2、C语言中的数据表示与存储</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/30/1%E3%80%81C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%AE%8C%E6%95%B4%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%8F%8AC%E8%AF%AD%E8%A8%80%E7%9A%84%E8%AF%AD%E6%B3%95%E8%A6%81%E7%82%B9/" class="archive-article-date">
-  	<time datetime="2022-06-30T10:40:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-30</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/30/1%E3%80%81C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%AE%8C%E6%95%B4%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%8F%8AC%E8%AF%AD%E8%A8%80%E7%9A%84%E8%AF%AD%E6%B3%95%E8%A6%81%E7%82%B9/">C语言的完整生命周期及C语言的语法要点</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -469,9 +567,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
